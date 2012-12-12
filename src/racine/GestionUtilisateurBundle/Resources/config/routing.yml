@@ -1,9 +1,10 @@
-racine_gestion_utilisateur_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: racineGestionUtilisateurBundle:Default:index }
 
-
-
-racine_gestion_utilisateur_Ajouterpage:
-    pattern:  /Ajouter
+# Ajout de l'utilisateur 
+racine_gestion_utilisateur_AjouterUtilisateur_page:
+    pattern:  /Utilisateur/Ajouter
     defaults: { _controller: racineGestionUtilisateurBundle:Ajouter:Ajouter }
+    
+# modification de l'utilisateur 
+racine_gestion_utilisateur_MofidierUtilisateur_page:
+    pattern:  /Utilisateur/Modifier
+    defaults: { _controller: racineGestionUtilisateurBundle:Mofidier:Modifier }

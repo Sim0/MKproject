@@ -25,10 +25,9 @@ class AjouterController extends Controller
                                                                                        
          $form = $formBuilder->getForm();
          
+         // $form = $this->createForm($type, $user);
          $request = $this->get('request');      
         
-         
-         
         if( $request->getMethod() == 'POST' )  // si la requet de type POST
         {
         $form->bindRequest($request);
