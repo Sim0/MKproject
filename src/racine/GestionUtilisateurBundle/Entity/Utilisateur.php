@@ -3,12 +3,16 @@
 namespace racine\GestionUtilisateurBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * racine\GestionUtilisateurBundle\Entity\Utilisateur
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="racine\GestionUtilisateurBundle\Entity\UtilisateurRepository")
+ * @UniqueEntity(fields="Gsm",message="Gsm deja utilisé")
+ * @UniqueEntity(fields="Mail",message="Mail deja utilisé")
+ * @UniqueEntity(fields="Login",message="Login deja utilisé")
  */
 class Utilisateur
 {
@@ -46,6 +50,7 @@ class Utilisateur
      * @var string $Mail
      *
      * @ORM\Column(name="Mail", type="string", length=30)
+     * @Assert\NotBlank()
      */
     private $Mail;
 
@@ -53,6 +58,7 @@ class Utilisateur
      * @var string $Login
      *
      * @ORM\Column(name="Login", type="string", length=20)
+     * @Assert\NotBlank()
      */
     private $Login;
 
@@ -60,6 +66,7 @@ class Utilisateur
      * @var string $Password
      *
      * @ORM\Column(name="Password", type="string", length=20)
+     * @Assert\NotBlank()
      */
     private $Password;
 
@@ -85,11 +92,13 @@ class Utilisateur
      * Set Nom
      *
      * @param string $nom
+     * @return Utilisateur
      */
     public function setNom($nom)
     {
         $this->Nom = $nom;
     
+        return $this;
     }
 
     /**
@@ -106,10 +115,13 @@ class Utilisateur
      * Set Prenom
      *
      * @param string $prenom
+     * @return Utilisateur
      */
     public function setPrenom($prenom)
     {
         $this->Prenom = $prenom;
+    
+        return $this;
     }
 
     /**
@@ -126,10 +138,13 @@ class Utilisateur
      * Set Gsm
      *
      * @param string $gsm
+     * @return Utilisateur
      */
     public function setGsm($gsm)
     {
         $this->Gsm = $gsm;
+    
+        return $this;
     }
 
     /**
@@ -146,10 +161,13 @@ class Utilisateur
      * Set Mail
      *
      * @param string $mail
+     * @return Utilisateur
      */
     public function setMail($mail)
     {
         $this->Mail = $mail;
+    
+        return $this;
     }
 
     /**
@@ -166,10 +184,13 @@ class Utilisateur
      * Set Login
      *
      * @param string $login
+     * @return Utilisateur
      */
     public function setLogin($login)
     {
         $this->Login = $login;
+    
+        return $this;
     }
 
     /**
@@ -186,10 +207,13 @@ class Utilisateur
      * Set Password
      *
      * @param string $password
+     * @return Utilisateur
      */
     public function setPassword($password)
     {
         $this->Password = $password;
+    
+        return $this;
     }
 
     /**
@@ -206,10 +230,13 @@ class Utilisateur
      * Set Grade
      *
      * @param string $grade
+     * @return Utilisateur
      */
     public function setGrade($grade)
     {
         $this->Grade = $grade;
+    
+        return $this;
     }
 
     /**

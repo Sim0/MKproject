@@ -9,50 +9,40 @@ class AjouterController extends Controller
 {
     public function AjouterAction()
     {
-           $user = new Utilisateur;
-    // On crée le FormBuilder grâce à la méthode du contrôleur.
-       $formBuilder = $this->createFormBuilder($user);
-
-       
-    // On ajoute les champs de l'entité que l'on veut à notre formulaire.
-         $formBuilder
-          ->add('Nom',    'text')
-          ->add('Prenom',     'text')
-          ->add('Gsm',    'text')   
-          ->add('Mail',    'text')  
-          ->add('Login',    'text')  
-          ->add('Password',    'password') 
-          ->add('Grade',    'choice',
-                  array('choices' => array('A' => 'Administrateur','U' => 'Utilisateur'), 
-                       'required'    => true,
-                       'empty_value' => NULL,
-                       ));
+        
+        $user = new Utilisateur;
+        
+        $formBuilder = $this->createFormBuilder($user);
+        
+        $formBuilder
+          ->add('Nom','text')
+          ->add('Prenom','text')
+          ->add('Gsm','text')   
+          ->add('Mail','text')  
+          ->add('Login','text')  
+          ->add('Password','password') 
+          ->add('Grade','choice', array('choices' => array('Admin' => 'Administrateur','User' => 'Utilisateur'),'required'=> true,'empty_value' => NULL ));
+                                                                                       
+         $form = $formBuilder->getForm();
          
-    // À partir du formBuilder, on génère le formulaire.
-       $form = $formBuilder->getForm();
-       
-    // On passe la méthode createView() du formulaire à la vue
-    // afin qu'elle puisse afficher le formulaire toute seule.
-       
-     
-
-        $request = $this->get('request');      // récupérer la requete 
-
-
+         $request = $this->get('request');      
+        
+         
+         
         if( $request->getMethod() == 'POST' )  // si la requet de type POST
         {
         $form->bindRequest($request);
-             
+ 
         if( $form->isValid() )   // si le formulaire est valide 
         {                        // on insere a la base de donnée 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($user);
         $em->flush();
+        return $this->render('racineGestionUtilisateurBundle:Ajouter:AjouterSucces.html.twig',array('user'=>$user));
         }
-           
+       
         }
-        
-        
-        return $this->render('racineGestionUtilisateurBundle:Ajouter:Ajouter.html.twig',array('form' => $form->createView()));
+
+         return $this->render('racineGestionUtilisateurBundle:Ajouter:Ajouter.html.twig',array('form' => $form->createView()));
     }
 }
