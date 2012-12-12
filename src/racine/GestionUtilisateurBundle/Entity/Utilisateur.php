@@ -85,13 +85,11 @@ class Utilisateur
      * Set Nom
      *
      * @param string $nom
-     * @return Utilisateur
      */
     public function setNom($nom)
     {
         $this->Nom = $nom;
     
-        return $this;
     }
 
     /**
@@ -108,13 +106,10 @@ class Utilisateur
      * Set Prenom
      *
      * @param string $prenom
-     * @return Utilisateur
      */
     public function setPrenom($prenom)
     {
         $this->Prenom = $prenom;
-    
-        return $this;
     }
 
     /**
@@ -131,13 +126,10 @@ class Utilisateur
      * Set Gsm
      *
      * @param string $gsm
-     * @return Utilisateur
      */
     public function setGsm($gsm)
     {
         $this->Gsm = $gsm;
-    
-        return $this;
     }
 
     /**
@@ -154,13 +146,10 @@ class Utilisateur
      * Set Mail
      *
      * @param string $mail
-     * @return Utilisateur
      */
     public function setMail($mail)
     {
         $this->Mail = $mail;
-    
-        return $this;
     }
 
     /**
@@ -177,13 +166,10 @@ class Utilisateur
      * Set Login
      *
      * @param string $login
-     * @return Utilisateur
      */
     public function setLogin($login)
     {
         $this->Login = $login;
-    
-        return $this;
     }
 
     /**
@@ -200,13 +186,10 @@ class Utilisateur
      * Set Password
      *
      * @param string $password
-     * @return Utilisateur
      */
     public function setPassword($password)
     {
         $this->Password = $password;
-    
-        return $this;
     }
 
     /**
@@ -223,13 +206,10 @@ class Utilisateur
      * Set Grade
      *
      * @param string $grade
-     * @return Utilisateur
      */
     public function setGrade($grade)
     {
         $this->Grade = $grade;
-    
-        return $this;
     }
 
     /**

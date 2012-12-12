@@ -1,3 +1,9 @@
 racine_gestion_utilisateur_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: racineGestionUtilisateurBundle:Default:index }
+
+
+
+racine_gestion_utilisateur_Ajouterpage:
+    pattern:  /Ajouter
+    defaults: { _controller: racineGestionUtilisateurBundle:Ajouter:Ajouter }
