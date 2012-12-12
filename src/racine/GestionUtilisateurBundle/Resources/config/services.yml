@@ -1,0 +1,7 @@
+parameters:
+#    racine_gestion_utilisateur.example.class: racine\GestionUtilisateurBundle\Example
+
+services:
+#    racine_gestion_utilisateur.example:
+#        class: %racine_gestion_utilisateur.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
