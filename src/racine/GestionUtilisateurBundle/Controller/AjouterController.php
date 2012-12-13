@@ -21,7 +21,7 @@ class AjouterController extends Controller
           ->add('Mail','text')  
           ->add('Login','text')  
           ->add('Password','password') 
-          ->add('Grade','choice', array('choices' => array('Admin' => 'Administrateur','User' => 'Utilisateur'),'required'=> true,'empty_value' => NULL ));
+          ->add('Grade','choice', array('choices' => array('Administrateur' => 'Administrateur','Utilisateur' => 'Utilisateur'),'required'=> true,'empty_value' => NULL ));
                                                                                        
          $form = $formBuilder->getForm();
          
