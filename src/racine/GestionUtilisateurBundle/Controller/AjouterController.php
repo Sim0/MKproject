@@ -9,8 +9,7 @@ use racine\GestionUtilisateurBundle\Form\Type\UtilisateurType;
 class AjouterController extends Controller
 {
     public function AjouterAction()
-    {
-        
+    {  
         $user = new Utilisateur;
         /*
         $formBuilder = $this->createFormBuilder($user);
