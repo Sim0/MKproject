@@ -4,6 +4,7 @@ namespace racine\GestionUtilisateurBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use racine\GestionUtilisateurBundle\Entity\Utilisateur;
+use racine\GestionUtilisateurBundle\Form\Type\UtilisateurType;
 
 class AjouterController extends Controller
 {
@@ -11,7 +12,7 @@ class AjouterController extends Controller
     {
         
         $user = new Utilisateur;
-        
+        /*
         $formBuilder = $this->createFormBuilder($user);
         
         $formBuilder
@@ -26,6 +27,9 @@ class AjouterController extends Controller
          $form = $formBuilder->getForm();
          
          // $form = $this->createForm($type, $user);
+         * 
+         */
+        $form = $this->createForm(new UtilisateurType() , $user);
          $request = $this->get('request');      
         
         if( $request->getMethod() == 'POST' )  // si la requet de type POST
