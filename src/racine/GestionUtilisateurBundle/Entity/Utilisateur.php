@@ -5,17 +5,24 @@ namespace racine\GestionUtilisateurBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use \Symfony\Component\Security\Core\User\UserInterface;
 /**
  * racine\GestionUtilisateurBundle\Entity\Utilisateur
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="racine\GestionUtilisateurBundle\Entity\UtilisateurRepository")
- * @UniqueEntity(fields="Gsm",message="Gsm deja utilisé")
- * @UniqueEntity(fields="Mail",message="Mail deja utilisé")
- * @UniqueEntity(fields="Login",message="Login deja utilisé")
+ * @UniqueEntity(fields="tel",message="tel deja utilisé")
+ * @UniqueEntity(fields="email",message="email deja utilisé")
+ * @UniqueEntity(fields="username",message="username deja utilisé")
  */
-class Utilisateur
+class Utilisateur implements UserInterface
 {
+     /**
+     * @ORM\ManyToMany(targetEntity="Groupes", inversedBy="utilisateurs")
+     *
+     */
+    private $groupes;
+    
     /**
      * @var integer $id
      *
@@ -25,64 +32,69 @@ class Utilisateur
      */
     private $id;
 
+   /**
+     * @var string $username
+     *
+     * @ORM\Column(name="username", type="string", length=20)
+     * @Assert\NotBlank()
+     */
+    private $username;
+    
     /**
      * @var string $Nom
      *
-     * @ORM\Column(name="Nom", type="string", length=20)
+     * @ORM\Column(name="nom", type="string", length=20)
      */
-    private $Nom;
+    private $nom;
 
     /**
      * @var string $Prenom
      *
-     * @ORM\Column(name="Prenom", type="string", length=20)
+     * @ORM\Column(name="prenom", type="string", length=20)
      */
-    private $Prenom;
+    private $prenom;
 
     /**
-     * @var string $Gsm
+     * @var string $tel
      *
-     * @ORM\Column(name="Gsm", type="string", length=20)
+     * @ORM\Column(name="tel", type="string", length=20)
      */
-    private $Gsm;
+    private $tel;
 
     /**
-     * @var string $Mail
+     * @var string $email
      *
-     * @ORM\Column(name="Mail", type="string", length=30)
+     * @ORM\Column(name="email", type="string", length=30)
      * @Assert\NotBlank()
      */
-    private $Mail;
+    private $email;
 
     /**
-     * @var string $Login
+     * @var string $password
      *
-     * @ORM\Column(name="Login", type="string", length=20)
+     * @ORM\Column(name="password", type="string", length=20)
      * @Assert\NotBlank()
      */
-    private $Login;
+    private $password;
 
     /**
-     * @var string $Password
-     *
-     * @ORM\Column(name="Password", type="string", length=20)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=32)
      */
-    private $Password;
-
-    /**
-     * @var string $Grade
-     *
-     * @ORM\Column(name="Grade", type="string", length=20)
-     */
-    private $Grade;
-
+    private $salt;
+   
+   
+    public function __construct()
+    {
+         $this->groupes = new ArrayCollection();
+    }
+    
 
     /**
      * Get id
      *
      * @return integer 
      */
+    
     public function getId()
     {
         return $this->id;
@@ -96,7 +108,7 @@ class Utilisateur
      */
     public function setNom($nom)
     {
-        $this->Nom = $nom;
+        $this->nom = $nom;
     
         return $this;
     }
@@ -108,7 +120,7 @@ class Utilisateur
      */
     public function getNom()
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
     /**
@@ -119,7 +131,7 @@ class Utilisateur
      */
     public function setPrenom($prenom)
     {
-        $this->Prenom = $prenom;
+        $this->prenom = $prenom;
     
         return $this;
     }
@@ -131,30 +143,30 @@ class Utilisateur
      */
     public function getPrenom()
     {
-        return $this->Prenom;
+        return $this->prenom;
     }
 
     /**
-     * Set Gsm
+     * Set tel
      *
-     * @param string $gsm
+     * @param string $tel
      * @return Utilisateur
      */
-    public function setGsm($gsm)
+    public function setTel($tel)
     {
-        $this->Gsm = $gsm;
+        $this->tel = $tel;
     
         return $this;
     }
 
     /**
-     * Get Gsm
+     * Get tel
      *
      * @return string 
      */
-    public function getGsm()
+    public function getTel()
     {
-        return $this->Gsm;
+        return $this->tel;
     }
 
     /**
@@ -163,55 +175,55 @@ class Utilisateur
      * @param string $mail
      * @return Utilisateur
      */
-    public function setMail($mail)
+    public function setEmail($email)
     {
-        $this->Mail = $mail;
+        $this->email = $email;
     
         return $this;
     }
 
     /**
-     * Get Mail
+     * Get mail
      *
      * @return string 
      */
-    public function getMail()
+    public function getEmail()
     {
-        return $this->Mail;
+        return $this->email;
     }
 
     /**
-     * Set Login
+     * Set username
      *
-     * @param string $login
+     * @param string $username
      * @return Utilisateur
      */
-    public function setLogin($login)
+    public function setUsername($username)
     {
-        $this->Login = $login;
+        $this->username = $username;
     
         return $this;
     }
 
     /**
-     * Get Login
+     * Get username
      *
      * @return string 
      */
-    public function getLogin()
+    public function getUsername()
     {
-        return $this->Login;
+        return $this->username;
     }
 
     /**
-     * Set Password
+     * Set password
      *
      * @param string $password
      * @return Utilisateur
      */
     public function setPassword($password)
     {
-        $this->Password = $password;
+        $this->password = $password;
     
         return $this;
     }
@@ -223,29 +235,43 @@ class Utilisateur
      */
     public function getPassword()
     {
-        return $this->Password;
+        return $this->password;
     }
 
+    public function eraseCredentials() {
+        
+    }
     /**
-     * Set Grade
-     *
-     * @param string $grade
-     * @return Utilisateur
+     * 
+     * @inheritDoc
      */
-    public function setGrade($grade)
-    {
-        $this->Grade = $grade;
+
+    public function getRoles() {
+        
+        return $this->groupes->toArray();
+        
+    }
     
-        return $this;
+    public function setSalt($salt){
+        $this->salt = $salt;
+        return $salt;
     }
-
-    /**
-     * Get Grade
-     *
-     * @return string 
-     */
-    public function getGrade()
-    {
-        return $this->Grade;
+    
+    public function getSalt() {
+        return $this->salt;
     }
+    
+    
+   public function getGroupes()
+   {
+       return $this->groupes;
+   }
+   
+   public function setGroupes($groupes)
+   {
+       $this->groupes = $groupes;
+       return $this;
+       
+   }
+    
 }

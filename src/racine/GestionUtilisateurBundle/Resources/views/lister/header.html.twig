@@ -1,0 +1,47 @@
+{# header template #}
+{% block header %}
+<html>
+   
+    <head>
+    {% javascripts filter="" output="js/core.js" debug=true
+               
+        '@racineGestionUtilisateurBundle/Resources/public/js/jquery.js'
+        '@racineGestionUtilisateurBundle/Resources/public/js/jquery-ui-1.8.13.custom.min.js'
+        '@racineGestionUtilisateurBundle/Resources/public/js/jquery.msgbox.js'
+
+        '@racineGestionUtilisateurBundle/Resources/public/js/jquery.dataTables.js'
+        '@racineGestionUtilisateurBundle/Resources/public/js/TableTools.min.js' 
+     %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+     {% endjavascripts %}
+    
+    {% stylesheets filter="" 
+    '@racineGestionUtilisateurBundle/Resources/public/css/*'
+     %}
+      <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+     {% endstylesheets %}
+      </head>
+      <body>
+
+<div class="header">
+    
+           <div id="logo"><img src="images/logo.png" alt="Logo" /></div>
+           
+           <div class="top-nav">
+               <ul>
+                   <li><a href="#" title="Dashboard" class="active" ><img src="images/icons/dashboard.png" alt="Dasboard" />Dashboard</a></li><!--Add "active" Class for Current Page-->
+                   <li><a href="forms.html" title="Forms" ><img src="images/icons/form.png" alt="Forms" />Forms Stuff</a></li>
+                   <li><a href="elements.html" title="Elements" ><img src="images/icons/elements.png" alt="Elements" />UI Elements</a></li>
+                   <li><a href="plugins.html" title="Plugins" ><img src="images/icons/plugins.png" alt="Plugins" />Plugins</a></li>
+                   <li><a href="notifications.html" title="Notifications" ><img src="images/icons/notification.png" alt="Notifications" />Notifications</a></li>
+                   <li><a href="error.html" title="Error Pages" ><img src="images/icons/error.png" alt="Error Pages" />Error Pages</a></li>
+                   <li><a href="additional.html" title="Additional Elements" ><img src="images/icons/settings.png" alt="Additional" />Additional</a></li>
+               </ul>
+           </div>
+    
+   </div>
+
+{% endblock %}
+
+
+

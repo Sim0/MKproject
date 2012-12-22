@@ -1,10 +1,25 @@
 
 # Ajout de l'utilisateur 
 racine_gestion_utilisateur_AjouterUtilisateur_page:
-    pattern:  /Utilisateur/Ajouter
+    pattern:  /Admin/Utilisateur/Ajouter
     defaults: { _controller: racineGestionUtilisateurBundle:Ajouter:Ajouter }
     
-# modification de l'utilisateur 
-racine_gestion_utilisateur_MofidierUtilisateur_page:
-    pattern:  /Utilisateur/Modifier
-    defaults: { _controller: racineGestionUtilisateurBundle:Mofidier:Modifier }
+#lister la liste des utilisateurs
+Admin_liste_Utilisateur:
+    pattern:  /Admin/Utilisateur/
+    defaults: { _controller: racineGestionUtilisateurBundle:list:Index }
+
+Admin_Ajout_Utilisateur:
+    pattern:  /Admin/Utilisateur/add
+    defaults: { _controller: racineGestionUtilisateurBundle:addus:Add }
+   
+login : 
+    pattern : /Admin/login
+    defaults : { _controller: racineGestionUtilisateurBundle:Authentification:Login }
+Admin_logout:
+    pattern : /Admin/logout
+    defaults : { _controller: racineGestionUtilisateurBundle:Authentification:Logout }
+    
+_security_check:
+    pattern: /Admin/login_check
+   

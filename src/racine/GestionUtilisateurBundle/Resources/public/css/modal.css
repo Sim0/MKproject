@@ -1,0 +1,49 @@
+
+
+/* Overlay */
+#simplemodal-overlay {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAQAAABuBnYAAAAAU0lEQVQIHQXBwRGDIBAAwO2/AMcCDHAcPjIRxjJ8Je1kl1uqUgphsWu6w0sIG6npLpcUBql4e/wsVRKabrkNTacIYbMrwsF06rqUhsnXVKVT+Hj+Ue4rPSONk4kAAAAASUVORK5CYII=);
+
+ cursor:wait;}
+
+/* Container */
+#simplemodal-container {display:inline;color:#fff; background-color: transparent;}
+#simplemodal-container p, #simplemodal-container h3{color:#bbb;}
+#simplemodal-container a {color:#ddd;}
+#simplemodal-container a.modalCloseImg {background:url(../images/x.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
+
+.modal-box{
+display:none;
+background-color:#FFFFFF;
+border:1px solid #b5b6b3;
+border-radius: 5px;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+
+}
+
+#modBox2,#modBox3{
+width:600px;
+height : 400px;
+padding:20px 20px 20px 100px;
+
+}
+#modBox4{
+
+	padding:20px 20px 20px 100px;
+}
+#modBox,#modBox5{
+height:630px;
+width:1000px;
+
+}
+#opBox{
+  position: relative;
+  top: 25%;
+  
+    
+}
+#teable{
+ height:450px;
+}
+

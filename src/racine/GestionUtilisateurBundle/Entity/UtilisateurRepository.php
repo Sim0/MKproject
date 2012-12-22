@@ -12,4 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class UtilisateurRepository extends EntityRepository
 {
+    public function selectUsers()
+    {
+       $q = $this->getEntityManager()->createQuery('Select u.id, u.username, u.nom, u.prenom, u.email,u.tel  from racineGestionUtilisateurBundle:Utilisateur u ' );
+       return $q->getResult();
+       
+    }
+    
 }

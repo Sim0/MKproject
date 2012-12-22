@@ -1,0 +1,333 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{% block header %}
+ {{parent()}}
+ <title>Lister Utilisateur</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+<div id="content">
+        <div class="tab_content" id="Utilisateurs"  >
+   <!--ici le contenu du tab fournisseurs--> 
+        <div class="element-box"> 
+        <h1>Utilisateurs</h1>
+                     <p>Cette table affiche tous les Utilisateurs du systeme </p>
+                     <br />     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+         <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTutilisateurs">
+	<thead><tr>
+			<th>Id_utilisateur</th>
+			<th>Pseudo</th>
+                        <th>Nom </th>
+			<th>Prenom </th>
+			<th>Email</th>
+			<th>Tel</th>
+                        
+                        
+                        
+		</tr>
+	</thead>
+	<tbody>
+		</table>
+                <div id="addBox" class="wizard-box modal-box"> 
+                   <form id="addarticlesform">
+
+                        <fieldset class="sectionwrap">
+                              <legend>Ajouter Utilisateurs</legend>
+                             <p><i>Entrez les identifiants du nouveau utilisateur , puis procédez aux étapes suivantes.( tous les champs sont obligatoires)</i></p>
+                               <div id="opBox">			
+                               <div class="form-row">
+                               <samp>Username :</samp>
+                               <input type="text" class="input-text medium a" name="addPseudo" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Mot de passe :</samp>
+                               <input type="password" class="input-text medium a" name="addPseudo" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Confirmer Mot de passe :</samp>
+                               <input type="password" class="input-text medium a" name="addPseudo" /> 
+                               </div></br>
+                               </div>
+                       </fieldset>
+                       
+                       <fieldset class="sectionwrap">
+                          <legend>Informations personnelles</legend>
+                          <p><i>Entrez les informations correspondant au nouveau utilisateur.</i></p>
+                       <div id="opBox">
+                        <div class="form-row">
+                        <samp>Nom</samp>
+                        <input type="text" class="input-text medium a" name="addNom" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Prénom</samp>
+                        <input type="text" class="input-text medium a" name="addPrenom" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Email</samp>
+                        <input type="text" class="input-text medium a" name="addEmail" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Tel</samp>
+                        <input type="text" class="input-text small a" name="addTel" /> 
+                        </div></br>
+                       </div>
+                        </fieldset>
+                       
+                       <fieldset class="sectionwrap">
+                          <legend>Attacher à un Rôle</legend>
+                          <p><i>Sélectionner le Role que vous souhaitez attribuer à l'utilisateur puis procédez à la finalisation</i></p>
+                        
+                        <div id="teable">
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="DTproduitf">
+				  <thead>
+                                     <tr>
+				     <th>ID groupe</th>
+				     <th>Nom groupe</th>
+				     <th>Role</th>
+			             </tr>
+                                  </thead>
+				    <tbody>
+				</table>
+			</div>
+                      </fieldset>
+                     <fieldset class="sectionwrap">
+                          <legend>Validation</legend>
+                             <p><i>Vérifier que les informations que vous avez choisi sont correctes.</i></p>
+                         <div class="form-row">
+                         <samp>Username :</samp>
+                               <input type="text" class="input-text medium a" name="AddPseudoV" /> 
+                               </div></br
+                        <div class="form-row">     
+                          <samp>Nom</samp>
+                        <input type="text" class="input-text medium a" name="AddNomV" /> 
+                        </div></br>
+                      
+                       <div class="form-row">
+                        <samp>Prénom</samp>
+                        <input type="text" class="input-text medium a" name="addPrenomV" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Email</samp>
+                        <input type="text" class="input-text medium a" name="addEmailV" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Tel</samp>
+                        <input type="text" class="input-text small a" name="addTelV" /> 
+                        </div></br>
+                      </fieldset>  
+                        
+                        
+                
+                
+                </div>
+		
+<script type="text/javascript">
+			$(document).ready(function(){
+				// "sDom": '<"H"Tfr>l<"clear">t<"F"ip>',
+				//"sDom": 'T<"clear">lfrtip',
+				
+			   var myTable = $('#DTutilisateurs').dataTable({
+			    	          
+			    	          "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+			    	          "bProcessing": true,
+							  "sAjaxSource": "{{ path('Admin_liste_Utilisateur') }}",
+							  "bJQueryUI": true,
+							  "sPaginationType": "full_numbers",
+							  "oTableTools": {
+        									    "sSwfPath": "./js/swf/copy_csv_xls_pdf.swf",
+        									    "aButtons": [
+																"copy","print",
+																{
+																	"sExtends":    "collection",
+																	"sButtonText": "Enregistrer sous",
+																	"aButtons":    [ "csv","xls", "pdf" ]
+																}
+															]
+       										 }		
+								});
+				 
+				  $('#DTutilisateurs tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+        								 
+					
+				
+				$('#ajouterFO').live('click',
+					function(e){
+					   
+                                            $("#addBox").modal();
+				
+                                                    $.ajax({
+                                                            type: 'POST',
+                                                            url: "{{ path('Admin_Ajout_Utilisateur') }}",
+                                                            data: {
+                                                                nom: nom,
+                                                                prenom: prenom,
+                                                                gsm : gsm,
+                                                                mail: mail,
+                                                                login : login,
+                                                                grade : grade
+
+                                                            },
+                                                            dataType : 'json',
+                                                            success: function (data) {
+                                                                    if(data.state == "success")
+                                                                    {
+                                                                            $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau fournisseur a été correctement ajouté à la base de donnée.</div></div>');
+
+
+                                                                myTable.fnAddData([
+                                                                    data.info,
+                                                                    nom,
+                                                                    prenom,
+                                                                    gsm,
+                                                                    mail,
+                                                                    login,
+                                                                    grade
+
+                                                                ]);
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout du fournisseur veuillez ressayer. </div></div>')
+
+                                                                }
+                                                                return false;
+                                                            },
+                                                            error: function () {
+                                                                alert("pb");
+                                                                return false;
+                                                            }
+									   
+							    		
+							    	
+							    	
+							    	
+							    
+							  });
+  
+					e.preventDefault();
+				
+				
+			});
+			
+			
+			$('#supprimerFO').click(function(){
+							selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{		
+						    $.msgbox("êtes-vous sûr de vouloir supprimer ce fournisseur?", {
+														type: "confirm",
+													    
+														buttons : [
+													        {type: "submit", value: "Oui"},{type: "submit", value: "Non"}
+															]},
+													
+													function(result) {
+														if(result == "Oui")
+														{
+															id = $('#DTfournisseur tr.row_selected td:first').text();
+															$.ajax({
+																url:"./php/db/fournisseurs/delete_fournisseur.php",
+																dataType:'json',
+																type:'post',
+																data : {
+																	id:id
+																	
+																},
+																success:function(data){
+																	if(data.state == "success")
+																	{
+																		myTable.fnDeleteRow(selectedRow[0]);
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le fournisseur est définitivement supprimé de la base de donnée.</div></div>');
+																		
+																	}
+																	else if(data.state == "error")
+																	{
+																		
+										         					   	$('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong>'+ data.info +'</div></div>');
+																	
+																	}
+																	
+																},
+																error:function(){
+																	
+																}
+																
+																
+																
+															});
+															
+															
+															
+															
+														}
+														else if(result =="Non" )
+														{
+															
+															//$.msgbox("Votre demande de suppresion est annulée !",{type:info});
+														}
+														
+														
+														
+													});
+													
+										}
+										else
+										{
+											$.msgbox("Aucun fournisseur n'est sélectionné pour la suppresion !");
+										}
+										
+											
+											
+											
+											
+										});
+										
+				
+			$('#modifierFO').live('click',function(){ alert('modifier');
+										});
+                                                                                });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+	    <a id="ajouterFO" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
+            <a id="modifierFO" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
+            <a id="supprimerFO" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+		
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

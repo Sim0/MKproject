@@ -26,8 +26,10 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [ ]
+    bundles:        
     #java: /usr/bin/java
+       - racineGestionUtilisateurBundle
+    
     filters:
         cssrewrite: ~
         #closure:
