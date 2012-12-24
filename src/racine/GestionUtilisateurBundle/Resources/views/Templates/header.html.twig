@@ -1,8 +1,7 @@
 {# header template #}
-{% block header %}
 <html>
-   
-    <head>
+{% block head %} 
+<head>
         {% stylesheets filter="" '@racineGestionUtilisateurBundle/Resources/public/css/*'
                                  '@racineGestionUtilisateurBundle/Resources/public/css/smoothness/*' %}
                <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
@@ -32,6 +31,12 @@
     
     
       </head>
+{% endblock %}
+
+{% block header %}
+
+   
+    
       <body>
 
 <div class="header">

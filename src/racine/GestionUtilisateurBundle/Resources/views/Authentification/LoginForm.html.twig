@@ -1,35 +1,69 @@
-{# empty Twig template #}
+{#  Twig form template #}
+{% extends "racineGestionUtilisateurBundle:Templates:header.html.twig" %}
+
+
+{%block head %} {{parent()}} {% endblock %}
+{%block header %}   
+     <p class="p-line"> {% if error %}
+                         <span class="error">{% if (error.message == "Bad credentials")
+                                                     %}
+                             couple Username/Password erroné !!
+                             {% endif %}</span>
+                                                 {% endif %}</p>
+            
+				<div id="login_wrapper" class="form_wrapper">
+                    
+					<form class="login active" action="{{ path("_security_check") }}"  method="post" id="login">
+						 <h3>Login</h3>
+						     
+                                                    <div>
+                                                        
+                                                     <label for="username">Username :  </label>
+                                                     <input type="text"  class="input-text" name="_username" value="{{ last_username }}" />
+						     
+						    </div>
+						<div>
+                                                     <label for="password">Password :  </label>
+                                                     <input type="password"  name="_password" class="input-text" />
+					             
+						</div>
+						<div class="bottom">
+							<div class="remember"><input type="checkbox" name="_remember_me" checked/><span>Se souvenir de moi</span></div>
+                            
+							<input type="submit" value="se connecter" class="button"  />
+                            
+							<div class="clear"></div>
+						</div>
+					</form>
+                    
+                    
+                    
+                    
+					
+                    
+                 </div>
+
+
+
+{% endblock %}
+
+
+           
+				
+			
+		
+
+
+
+
 
 {% block content %}
     <h1>Login</h1>
     
 
-    {% if error %}
-        <div class="error">{{ error.message }}</div>
-    {% endif %}
+   
 
-    <form action="{{ path("_security_check") }}" method="post" id="login">
-        <div>
-            <label for="username">Username :  </label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" />
-        </div>
-<br>
-        <div>
-            <label for="password">Password :  </label>
-            <input type="password" id="password" name="_password" />
-        </div>
-<br>
-            <div>
-                <label for="remember_me">Se souvenir de moi</label>
-            <input type="checkbox" id="remember_me" name="_remember_me" checked /> 
-            
-            </div>
-<br>
-        <input type="submit" class="symfony-button-grey" value="Connecter" />
-        
-        
-        
-    </form>
+   
 {% endblock %}
 
 {% set code = code(_self) %}

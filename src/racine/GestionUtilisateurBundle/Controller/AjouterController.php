@@ -10,7 +10,7 @@ class AjouterController extends Controller
 {
     public function AjouterAction()
     {  
-        $user = new Utilisateur;
+        $user = new Utilisateur();
         /*
         $formBuilder = $this->createFormBuilder($user);
         
