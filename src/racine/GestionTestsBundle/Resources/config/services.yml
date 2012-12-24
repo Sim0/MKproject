@@ -1,0 +1,7 @@
+parameters:
+#    racine_gestion_tests.example.class: racine\GestionTestsBundle\Example
+
+services:
+#    racine_gestion_tests.example:
+#        class: %racine_gestion_tests.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

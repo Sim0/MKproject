@@ -1,0 +1,4 @@
+racine_gestion_tests_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: racineGestionTestsBundle:Default:index }
+

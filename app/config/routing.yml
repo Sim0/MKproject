@@ -1,6 +1,17 @@
+racine_gestion_tests:
+    resource: "@racineGestionTestsBundle/Resources/config/routing.yml"
+    prefix:   /
+
 racine_gestion_utilisateur:
     resource: "@racineGestionUtilisateurBundle/Resources/config/routing.yml"
     prefix:   /
+
+
+GestionTests:
+  resource: "@racineGestionTestsBundle/Controller"
+  prefix: /
+
+
 
 # Internal routing configuration to handle ESI
 #_internal:
