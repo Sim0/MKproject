@@ -7,9 +7,20 @@
        <div class="profile">
          <form action="http://infynitix.com/" target="_blank">
          <img src="images/user.jpg" alt="User" />
-         <h2>app.user.username</h2>
+         <h2>{{ app.user.username }} :</h2>
+   {% if is_granted('ROLE_SUPER_ADMIN') %}
+  Superadmin
+  {% elseif is_granted('ROLE_ADMIN')%}
+  admin
+  {% else %}
+  pas de role
+  
+   {% endif %} 
+
+
+
          <h4>Reportin Website <input type="submit" class="common-button" value="infynitix.com" /></h4>
-         <h4><a href="#">Help</a> . <a href="#">Account</a> . <a href="#">{{ path('Admin_logout') }}<img src="images/icons/login.jpg" alt="login" /></a></h4>
+         <h4><a href="#">Help</a> . <a href="#">Account</a> . <a href="{{ path('Admin_logout') }}">Logout--<img src="images/icons/login.jpg" alt="login" /></a></h4>
          </form>      
        </div>
         

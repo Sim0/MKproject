@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
  * 
  */
 
-class Groupes implements RoleInterface
+class Groupes implements RoleInterface , \Serializable
 {
      /**
      * @ORM\ManyToMany(targetEntity="Utilisateur", mappedBy="groupes")
@@ -46,7 +46,7 @@ class Groupes implements RoleInterface
 
    public function __construct()
    {
-        $this->utilisateurs = new ArrayCollection();
+        $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
    }
 
    
@@ -94,6 +94,45 @@ class Groupes implements RoleInterface
         return $this->role;
         
     }
+    
+    
+    
+    public function getUtilisateurs() {
+      
+        return $this->utilisateurs->toArray();
+    }
 
+    
+    // on a ajouté ce code 
+    
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        /*
+         * ! Don't serialize $users field !
+         */
+        return \serialize(array(
+            $this->id,
+            $this->nom,
+            $this->role
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->nom,
+            $this->role
+        ) = \unserialize($serialized);
+    }
+    
+    
     
 }

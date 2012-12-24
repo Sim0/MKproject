@@ -7,12 +7,18 @@ racine_gestion_utilisateur_AjouterUtilisateur_page:
 #lister la liste des utilisateurs
 Admin_liste_Utilisateur:
     pattern:  /Admin/Utilisateur/
-    defaults: { _controller: racineGestionUtilisateurBundle:list:Index }
+    defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:Index }
+
+Admin_liste_Roles:
+    pattern:  /Admin/Utilisateur/Roles
+    defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:getRoles }
+  
 
 Admin_Ajout_Utilisateur:
     pattern:  /Admin/Utilisateur/add
-    defaults: { _controller: racineGestionUtilisateurBundle:addus:Add }
+    defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:Add }
    
+#Authentification
 login : 
     pattern : /Admin/login
     defaults : { _controller: racineGestionUtilisateurBundle:Authentification:Login }

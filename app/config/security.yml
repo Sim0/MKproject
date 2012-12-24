@@ -21,6 +21,7 @@ security:
           entity: {class : racineGestionUtilisateurBundle:Utilisateur,property: username}
 
     firewalls:
+       
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -28,19 +29,54 @@ security:
         login:
             pattern:  ^/Admin/login$
             security: false
+            
+             
+      #  main: 
+      #      form_login: 
+      #        check_path: /Admin/login_check
+       #       login_path: /Admin/login
+       #       remember_me: true
+        #      
+        #    remember_me: 
+         #       key :      %secret%
+         #       lifetime : 60
+         #       domain :   ~
+         #       path : /
+         #       name : "rmbrm"
+         #   logout: true
+            
 
         secured_area:
             pattern:    ^/Admin
             form_login:
                 check_path: /Admin/login_check
                 login_path: /Admin/login
+                remember_me: true
+                default_target_path: /Admin/Utilisateur
+                
+ 
+            remember_me: 
+                key :      %secret%
+                lifetime : 60
+                domain :   ~
+                path : /
+                name : "rmbrm"
+            
+            logout: true
+            
             logout:
                 path:   /Admin/logout
-                target: /
+                target: /Admin/login
+                invalidate_session: true
+                delete_cookies:
+                    rmbrm: { path: /, domain: ~ }
+   
+          
             #anonymous: ~
             #http_basic:
             #    realm: "Secured Demo Area"
 
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+         #- { path: ^/Admin, roles: ROLE_SUPER_ADMIN, requires_channel: http}
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }

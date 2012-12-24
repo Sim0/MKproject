@@ -9,6 +9,9 @@ use racine\GestionUtilisateurBundle\Form\Type\UtilisateurType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Http\Logout\SessionLogoutHandler;
+use Symfony\Component\Security\Http\Logout\CookieClearingLogoutHandler;
+
 
 class AuthentificationController extends Controller
 {
@@ -34,11 +37,25 @@ class AuthentificationController extends Controller
  
         }
        public function LogoutAction()
+               
        {
-           $user = $this->getUser();
-           $user->logOut();
+           /**
+           $coockie = new CookieClearingLogoutHandler;
+           $coockie->logout(null,null,"how");
+           $session = new SessionLogoutHandler();
            
+           $session->logout(null, null, "how");
+         **/
+           /**
+           $this->getRequest()->getSession()->invalidate();
+           $response = new Response();
+           $response->headers->clearCookie("rmbrm");
            
+           return $this->render($response);
+           **/
+          /** $this->getRequest()->getSession()->invalidate();
+           return true;
+      **/
        }
                
             

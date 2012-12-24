@@ -34,8 +34,9 @@
 	</thead>
 	<tbody>
 		</table>
+                
                 <div id="addBox" class="wizard-box modal-box"> 
-                   <form id="addarticlesform">
+                   <form id="addarticlesform" method="POST">
 
                         <fieldset class="sectionwrap">
                               <legend>Ajouter Utilisateurs</legend>
@@ -47,11 +48,11 @@
                                </div></br>
                                <div class="form-row">
                                <samp>Mot de passe :</samp>
-                               <input type="password" class="input-text medium a" name="addPseudo" /> 
+                               <input type="password" class="input-text medium a" name="addPassword" /> 
                                </div></br>
                                <div class="form-row">
                                <samp>Confirmer Mot de passe :</samp>
-                               <input type="password" class="input-text medium a" name="addPseudo" /> 
+                               <input type="password" class="input-text medium a" name="cPassword" /> 
                                </div></br>
                                </div>
                        </fieldset>
@@ -84,7 +85,7 @@
                           <p><i>Sélectionner le Role que vous souhaitez attribuer à l'utilisateur puis procédez à la finalisation</i></p>
                         
                         <div id="teable">
-				<table cellpadding="0" cellspacing="0" border="0" class="display" id="DTproduitf">
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="DTrolef">
 				  <thead>
                                      <tr>
 				     <th>ID groupe</th>
@@ -101,25 +102,37 @@
                              <p><i>Vérifier que les informations que vous avez choisi sont correctes.</i></p>
                          <div class="form-row">
                          <samp>Username :</samp>
-                               <input type="text" class="input-text medium a" name="AddPseudoV" /> 
-                               </div></br
+                               <input type="text" class="input-text medium a" name="addPseudoV" disabled="disabled" /> 
+                               </div></br>
                         <div class="form-row">     
                           <samp>Nom</samp>
-                        <input type="text" class="input-text medium a" name="AddNomV" /> 
+                        <input type="text" class="input-text medium a" name="addNomV" disabled="disabled" /> 
                         </div></br>
                       
                        <div class="form-row">
                         <samp>Prénom</samp>
-                        <input type="text" class="input-text medium a" name="addPrenomV" /> 
+                        <input type="text" class="input-text medium a" name="addPrenomV"  disabled="disabled"/> 
                         </div></br>
                         <div class="form-row">
                         <samp>Email</samp>
-                        <input type="text" class="input-text medium a" name="addEmailV" /> 
+                        <input type="text" class="input-text medium a" name="addEmailV" disabled="disabled"/> 
                         </div></br>
                         <div class="form-row">
                         <samp>Tel</samp>
-                        <input type="text" class="input-text small a" name="addTelV" /> 
+                        <input type="text" class="input-text small a" name="addTelV" disabled="disabled" /> 
                         </div></br>
+                        <table>
+                            <thead><tr>
+                            <th>Id_groupe</th>
+                            <th>nom_groupe</th>
+                            <th>nom_role</th>
+			</tr>
+                        </table>
+                       <div class="form-row">
+                        
+                        <input type="button" id="addUser" class="button green-button" name="addUserform"  value="Ajouter" /> 
+                        </div></br>
+                        
                       </fieldset>  
                         
                         
@@ -151,8 +164,34 @@
 															]
        										 }		
 								});
+                                                                
+                                                                
 				 
 				  $('#DTutilisateurs tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+                             var TableRoles = $('#DTrolef').dataTable({
+			    	          
+			    	          "sDom": '<"H"lfr>t<"F"ip>',
+			    	          "bProcessing": true,
+							  "sAjaxSource": "{{ path('Admin_liste_Roles') }}",
+                                                          "bJQueryUI": true,
+							  "sPaginationType": "full_numbers",
+							  "oTableTools": {
+                                                                                    "sRowSelect": "multi",
+        									   
+       										 }		
+								});
+                             $('#DTrolef tr').live('click',function(){
 				  	if($(this).hasClass('row_selected'))
 				  	{
 				  		$(this).removeClass('row_selected');
@@ -169,49 +208,117 @@
 				
 				$('#ajouterFO').live('click',
 					function(e){
-					   
-                                            $("#addBox").modal();
-				
-                                                    $.ajax({
+					    var pseudo;
+                                            var nom;
+                                            var prenom;
+                                            var email;
+                                            var tel;
+                                            var password;
+                                            var idrole;
+                                            
+                                            var usersModal = $("#addBox").modal();
+                                            var myform=new formtowizard({
+                                                                        formid: 'addarticlesform',
+                                                                        persistsection: false,
+                                                                        revealfx: ['slide', 500],
+                                                                         onpagechangestart:function($, i, $fieldset){
+                                                                                                                var validated=true
+                                                                                                                switch(i)
+                                                                                                                {case 0:if($('input[name="addPseudo"]').val() == "" || $('input[name="addPassword"]').val()== "" || $('input[name="cPassword"]').val() == "")
+                                                                                                                         validated = false;
+                                                                                                                        else 
+                                                                                                                            {
+                                                                                                                                $('input[name="addPseudoV"]').val($('input[name="addPseudo"]').val());
+                                                                                                                                pseudo = $('input[name="addPseudoV"]').val();
+                                                                                                                                password = $('input[name="addPassword"]').val();
+                                                                                                                               
+                                                                                                                                
+                                                                                                                                }
+                                                                                                                        
+                                                                                                                        break;
+                                                                                                                 case 1: if($("input[name='addNom']").val() == "" || $("input[name='addPrenom']").val()== "" || $("input[name='addTel']").val() == "" || $("input[name='addEmail']").val() == "")
+                                                                                                                        validated = false;
+                                                                                                                        else
+                                                                                                                            {
+                                                                                                                                $('input[name="addNomV"]').val($('input[name="addNom"]').val());
+                                                                                                                                nom = $('input[name="addNomV"]').val();
+                                                                                                                                $('input[name="addPrenomV"]').val($('input[name="addPrenom"]').val());
+                                                                                                                                prenom = $('input[name="addPrenomV"]').val();
+                                                                                                                                $('input[name="addTelV"]').val($('input[name="addTel"]').val());
+                                                                                                                                tel = $('input[name="addTelV"]').val();
+                                                                                                                                $('input[name="addEmailV"]').val($('input[name="addEmail"]').val());
+                                                                                                                                email = $('input[name="addEmailV"]').val();
+                                                                                                                                
+                                                                                                                                }
+                                                                                                                     break;
+                                                                                                                 case 2: if($('#DTrolef tr.row_selected').length != 0)
+                                                                                                                         {
+                                                                                                                             idrole =  $('#DTrolef tr.row_selected td:first').text();
+                                                                                                                            
+                                                                                                                             }
+                                                                                                                             else
+                                                                                                                                 validated = false;
+                                                                                                                     break;
+                                                                                                                 case 3: 
+                                                                                                                     
+                                                                                                                     break;
+                                                                                                                 default : validated = false; break;
+                                                                                                                    }
+                                                                                                                /**var $els=$fieldset.find('input[type="text"], textarea') //get textbox and textarea elements
+                                                                                                                $els.each(function(){ //loop thru these elements
+                                                                                                                if ($(this).val()==""){ //if element is empty
+                                                                                                                alert("Please fill out the field "+$(this).attr('id'))
+                                                                                                                $(this).focus()
+                                                                                                                validated=false
+                                                                                                                return false //break out of each() loop
+                                                                                                                }
+                                                                                                                })**/
+                                                                                                                return validated //if this variable returns false, user is prevented from going on to next form page
+                                                                       }});
+                                                                      
+                                      $('#addUser').live('click',function(){ 
+                                                            usersModal.close();
+                                                            $.ajax({
                                                             type: 'POST',
                                                             url: "{{ path('Admin_Ajout_Utilisateur') }}",
                                                             data: {
                                                                 nom: nom,
                                                                 prenom: prenom,
-                                                                gsm : gsm,
-                                                                mail: mail,
-                                                                login : login,
-                                                                grade : grade
+                                                                tel : tel,
+                                                                email: email,
+                                                                pseudo : pseudo,
+                                                                password : password,
+                                                                idrole : idrole// devrait être haché avant de l'envoyer!!!!
 
                                                             },
                                                             dataType : 'json',
-                                                            success: function (data) {
-                                                                    if(data.state == "success")
+                                                            success: function (data,status) {
+                                                                if(data.status == "200")
                                                                     {
-                                                                            $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau fournisseur a été correctement ajouté à la base de donnée.</div></div>');
+                                                                            $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau utilisateur a été correctement ajouté à la base de donnée.</div></div>');
 
 
                                                                 myTable.fnAddData([
                                                                     data.info,
+                                                                    pseudo,
                                                                     nom,
                                                                     prenom,
-                                                                    gsm,
-                                                                    mail,
-                                                                    login,
-                                                                    grade
+                                                                    email,
+                                                                    tel,
+                                                                    
 
                                                                 ]);
                                                                 }
                                                                 else
                                                                 {
 
-                                                                    $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout du fournisseur veuillez ressayer. </div></div>')
+                                                                    $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout de l\'utilisateur veuillez ressayer. </div></div>')
 
                                                                 }
                                                                 return false;
                                                             },
-                                                            error: function () {
-                                                                alert("pb");
+                                                            error: function (jqHx,status) {
+                                                                alert(status);
                                                                 return false;
                                                             }
 									   
@@ -221,9 +328,11 @@
 							    	
 							    
 							  });
-  
-					e.preventDefault();
-				
+                               
+                                  
+                                                                    });
+				e.preventDefault();
+                                                    
 				
 			});
 			
@@ -234,7 +343,7 @@
 							
 							if(selectedRow.length !== 0)
 							{		
-						    $.msgbox("êtes-vous sûr de vouloir supprimer ce fournisseur?", {
+						            $.msgbox("êtes-vous sûr de vouloir supprimer ce fournisseur?", {
 														type: "confirm",
 													    
 														buttons : [

@@ -5,7 +5,9 @@ namespace racine\GestionUtilisateurBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use \Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * racine\GestionUtilisateurBundle\Entity\Utilisateur
  *
@@ -15,7 +17,8 @@ use \Symfony\Component\Security\Core\User\UserInterface;
  * @UniqueEntity(fields="email",message="email deja utilisé")
  * @UniqueEntity(fields="username",message="username deja utilisé")
  */
-class Utilisateur implements UserInterface
+class Utilisateur implements UserInterface , \Serializable
+
 {
      /**
      * @ORM\ManyToMany(targetEntity="Groupes", inversedBy="utilisateurs")
@@ -35,7 +38,7 @@ class Utilisateur implements UserInterface
    /**
      * @var string $username
      *
-     * @ORM\Column(name="username", type="string", length=20)
+     * @ORM\Column(name="username", type="string", length=25)
      * @Assert\NotBlank()
      */
     private $username;
@@ -64,7 +67,7 @@ class Utilisateur implements UserInterface
     /**
      * @var string $email
      *
-     * @ORM\Column(name="email", type="string", length=30)
+     * @ORM\Column(name="email", type="string", length=60)
      * @Assert\NotBlank()
      */
     private $email;
@@ -72,7 +75,7 @@ class Utilisateur implements UserInterface
     /**
      * @var string $password
      *
-     * @ORM\Column(name="password", type="string", length=20)
+     * @ORM\Column(name="password", type="string", length=40)
      * @Assert\NotBlank()
      */
     private $password;
@@ -251,6 +254,7 @@ class Utilisateur implements UserInterface
         return $this->groupes->toArray();
         
     }
+   
     
     public function setSalt($salt){
         $this->salt = $salt;
@@ -273,5 +277,46 @@ class Utilisateur implements UserInterface
        return $this;
        
    }
-    
+   
+   
+   
+   // on a ajouté ce code 
+   
+   
+     /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+        /*
+         * ! Don't serialize $roles field !
+         */
+        return \serialize(array(
+            $this->id,
+            $this->username,
+            $this->nom,
+            $this->prenom,
+            $this->email,
+            $this->salt,
+            $this->password,
+            
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+        list (
+             $this->id,
+            $this->username,
+            $this->nom,
+            $this->prenom,
+            $this->email,
+            $this->salt,
+            $this->password
+        ) = \unserialize($serialized);
+    }
+
 }
