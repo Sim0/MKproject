@@ -1,0 +1,7 @@
+parameters:
+#    racine_gestion_candidats.example.class: racine\GestionCandidatsBundle\Example
+
+services:
+#    racine_gestion_candidats.example:
+#        class: %racine_gestion_candidats.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

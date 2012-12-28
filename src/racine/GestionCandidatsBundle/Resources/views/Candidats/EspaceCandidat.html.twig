@@ -1,0 +1,95 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Candidat</title>
+    
+{% endblock %}
+{% block body %}
+ {{parent()}}
+
+    
+ <div id="content">
+        <div class="tab_content" id="Utilisateurs"  >
+   <!--ici le contenu du tab fournisseurs--> 
+        <div class="element-box"> 
+            {%  if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <h1>Espace Candidat : {{ app.user.getNom }} </h1>
+        
+        {% endif %} 
+                   
+                <p>Information du Candidat :</p>
+                <br/>
+                <ul class="client_details">
+                <li>Code Session : {{ app.user.getCodesession }}</li>
+                <li>Prenom : {{ app.user.getPrenom }}</li>
+                <li>nom : {{ app.user.getNom }}</li>
+                <li>Tel : {{ app.user.getTel }}</li>
+                <li>Ecole: {{ app.user.getEcole }}</li>
+                <li>Filiere: {{ app.user.getFiliere }}</li>
+                <li>Email: {{ app.user.getEmail }}</li>
+                </ul>
+                     
+                     
+        </div>
+        
+		
+                      
+                        
+      </div>                  
+                
+               
+		
+<script type="text/javascript">
+			$(document).ready(function(){
+				              
+                        
+                       
+                        
+										
+                                                      });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+             
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

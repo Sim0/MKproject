@@ -1,0 +1,31 @@
+racine_gestion_candidats_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: racineGestionCandidatsBundle:Default:index }
+
+
+#Authentification candidat 
+Candidat :
+    pattern : /index
+    defaults : { _controller: racineGestionCandidatsBundle:Authentification:Login }
+  
+
+Candidat_login : 
+    pattern : /Candidat/login
+    defaults : { _controller: racineGestionCandidatsBundle:Authentification:Login }
+
+Candidat_logout:
+    pattern : /Candidat/logout
+    defaults : { _controller: racineGestionCandidatsBundle:Authentification:Logout }    
+
+_security_check_Candidat :
+    pattern: /Candidat/login_check
+
+_espace_candidat:
+    pattern : /Candidat/espace
+    defaults : { _controller: racineGestionCandidatsBundle:Candidat:Index }
+
+_Candidat_inscription:
+    pattern : /Candidat/inscription
+    defaults : { _controller: racineGestionCandidatsBundle:Candidat:Inscription }
+   
+

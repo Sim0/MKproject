@@ -1,0 +1,205 @@
+{# empty Twig template #}
+{#  Twig form template #}
+
+{% extends "racineGestionCandidatsBundle:Templates:header.html.twig" %}
+
+
+{%block head %} {{parent()}} 
+<style type='text/css'>
+        #loading {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		}
+
+	#calendar {
+                margin: 10px;
+		width: 500px;
+		margin: 0 auto;
+		}
+        .fc-header-title h2 {
+                color: #fff;
+	}
+
+</style>
+{% endblock %}
+{%block header %}   
+        <p class="p-line">Cliquer sur choisir créneau pour procédez à la deuxième étape et retour pour revenir en arrière</p>
+            
+				<div id="login_wrapper" class="form_wrapper">
+                
+					<form class="register active">
+                                            <h3>Inscription 1/2 </h3>
+						<div class="column">
+							<div>
+								<label>Nom:</label>
+								<input type="text" class="input-text"  name="nom"/>
+								<span class="error">This is an error</span>
+							</div>
+							<div>
+								<label>Prenom:</label>
+								<input type="text" class="input-text" name="prenom"/>
+								<span class="error">This is an error</span>
+							</div>
+							<div>
+								<label>Email:</label>
+								<input type="text" class="input-text" value="" name="email"/>
+								<span class="error">This is an error</span>
+							</div>
+						</div>
+						<div class="column">
+							<div>
+								<label>Ecole:</label>
+								<input type="text" class="input-text" name="ecole"/>
+								<span class="error">This is an error</span>
+							</div>
+							<div>
+								<label>Filiere:</label>
+								<input type="text" class="input-text" name="filiere" />
+								<span class="error">This is an error</span>
+							</div>
+							<div>
+								<label>Tel:</label>
+								<input type="text" class="input-text" name="tel" />
+								<span class="error">This is an error</span>
+							</div>
+						</div>
+						<div class="bottom">
+							
+						        <a href="index.html" rel="creneau" class="linkform">cliquez ici pour choisir un créneau (*)</a>
+							<div class="clear"></div>
+						</div>
+					</form>
+                    
+                    
+                    
+					<form class="creneau" method="post">
+                                            <h3>Inscription 2/2 </h3>
+                                            <div>
+                                           <div id='loading' style='display:none'>loading...</div>
+                                                <div id='calendar'></div>
+</div>
+
+						<div class="bottom">
+							
+                                                    <input type="button" value="S'inscrire" class="button" name="inscription" style="float: right;"/>
+							<a href="index.html" rel="register" class="linkform">Retour</a>
+							<div class="clear"></div>
+						</div>
+						
+					</form>
+                    
+                    
+                    
+                    
+					
+                    
+                 </div>
+		
+         <script type="text/javascript">
+			$(document).ready(function(){
+                           
+                            
+                            /**********CALENDAR*********/  
+/**********CALENDAR*********/	
+	
+	
+var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		var calendar = $('#calendar').fullCalendar({
+			//theme: true, 
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'month,agendaWeek,agendaDay'
+			},
+			selectable: true,
+			selectHelper: true,
+			
+                        
+			events: "{{ path('_get_creneau') }}"
+	
+	
+	});
+	
+                            
+                           
+                            // fin calendrier
+                            
+                            $('input[name="inscription"]').live('click',function(){
+                               //Déclaration de variable avec "var" pour une portée sur toute la fonction
+                                var nom;
+                                var prenom;
+                                var email;
+                                var tel;
+                                var ecole;
+                                var filiere;
+                               //récupération des données saisies dans le formulaires d'inscription
+                                nom = $('input[name="nom"]').val();
+                                prenom = $('input[name="prenom"]').val();
+                                email = $('input[name="nom"]').val();
+                                tel = $('input[name="tel"]').val();
+                                ecole =  $('input[name="ecole"]').val();
+                                filiere = $('input[name="filiere"]').val();
+                                
+                                if( nom =="" || prenom == "" || email== ""|| tel == "" || ecole == "" || filiere == ""  ) 
+                                    $.msgbox("Veuillez fournir toutes les informations pour l'inscription!");
+                                        
+                                else
+                                    {
+                                        //envoie données nécessaires pour inscription via ajax et attente de la réponse "code session" si tout va bien
+                                         $.ajax({
+                                                           
+                                                           type: 'POST',
+                                                            url: "{{ path('_Candidat_inscription') }}",
+                                                            data: {
+                                                                nom: nom,
+                                                                prenom: prenom,
+                                                                tel : tel,
+                                                                email: email,
+                                                                ecole : ecole,
+                                                                filiere : filiere
+                                                                  },
+                                                                  
+                                                           dataType : 'json',
+                                                           
+                                                           success: function (data,status) {
+                                                               $.msgbox("Félicitation "+prenom+" "+nom+ " l'inscription a réussi.<BR>  Notez Votre code session est :"+data.info+" <BR><BR><BR><a href=\"{{path('Candidat_login')}}\">se connecter</a> ");
+                                                               
+                                                                                           },
+                                                               
+                                                           error: function (jqHx,status) {
+                                                                alert(status);
+                                                                return false;
+                                                            }
+									   
+				               });
+                                                                  
+                                                               
+                                        
+                                        
+                                        }
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                });
+                                
+                            
+                            });
+</script>
+</body>
+</html>
+{% endblock %}
+        
+       
+
+{% set code = code(_self) %}
