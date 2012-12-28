@@ -60,7 +60,6 @@ class UtilisateurController extends Controller {
         if ($request->isXmlHttpRequest()) {
 
 
-
             $repository = $this->getDoctrine()->getRepository('racineGestionUtilisateurBundle:Groupes');
 
             $roles = $repository->selectRoles();
@@ -118,6 +117,8 @@ class UtilisateurController extends Controller {
             $user->setUsername($request->get('pseudo',''));
             $user->setPassword(sha1($request->get('password')));
             $user->setSalt("");
+            $user->setIsValid(true);
+                    
             $idGroup = $request->get('idrole');
             
             $em = $this->getDoctrine()->getManager();
@@ -152,7 +153,92 @@ class UtilisateurController extends Controller {
         
         
     }
+    
+    public function EditAction(request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
 
+                $user = $em->getRepository('racineGestionUtilisateurBundle:Utilisateur')->find($id);
+
+                if (!$user) {
+                    throw $this->createNotFoundException('Unable to find Question entity.');
+                }
+            
+           
+          
+            $user->setNom($request->get('nom',''));
+            $user->setPrenom($request->get('prenom',''));
+            $user->setTel($request->get('tel',''));
+            $user->setEmail($request->get('email',''));
+            $user->setUsername($request->get('pseudo',''));
+            $user->setPassword(sha1($request->get('password')));
+            $user->setSalt("");
+            
+           
+            $em->persist($user);
+            $em->flush();
+            
+             //Vérifier si la valeur idrole est bien assignée!!
+            $idUser = $user->getId(); 
+            
+            
+           
+            
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idUser);
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        
+       
+        return $resp;
+        
+        
+    }
+    
+     public function DeleteAction(request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
+
+                $user = $em->getRepository('racineGestionUtilisateurBundle:Utilisateur')->find($id);
+
+                if (!$user) {
+                    throw $this->createNotFoundException('Unable to find Question entity.');
+                }
+                
+              $em->remove($user);
+              $em->flush();
+              
+        $content = array("status"=>"200");
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        
+       
+        return $resp;
+        
+                
+                
+                
+        }
+        
+    }
 }
 
 ?>

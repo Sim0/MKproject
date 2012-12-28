@@ -1,0 +1,117 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Candidats</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+<div id="content">
+        <div class="tab_content" id="Candidats"  >
+   <!--ici le contenu du tab fournisseurs--> 
+        <div class="element-box"> 
+        <h1>Utilisateurs</h1>
+                     <p>Cette table affiche  tous les Candidats validés </p>
+                     <br />     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTcandidats">
+	<thead><tr>
+			<th>Id_candidat</th>
+			<th>Code Session</th>
+                        <th>Prenom </th>
+			<th>Nom </th>
+			<th>Ecole</th>
+			<th>Filiere</th>
+                        <th>Ecole</th>
+			<th>Tel</th>
+                        <th>Resultat</th>
+                        
+                        
+                        
+		</tr>
+	</thead>
+	<tbody>
+		</table>
+                
+                
+                 
+		
+<script type="text/javascript">
+	$(document).ready(function(){
+				
+	     // intanciation et paramétrage du Datatable "Candidat" 			
+            var myTable = $('#DTcandidats').dataTable({
+
+                           "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+                           "bProcessing": true,
+                                           "sAjaxSource": "{{ path('Admin_liste_Candidats') }}",
+                                           "bJQueryUI": true,
+                                           "sPaginationType": "full_numbers",
+                                           "oTableTools": {
+                                                             "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
+                                                             "aButtons": [
+                                                                             "copy","print",
+                                                                             {
+                                                                                     "sExtends":    "collection",
+                                                                                     "sButtonText": "Enregistrer sous",
+                                                                                     "aButtons":    [ "csv","xls", "pdf" ]
+                                                                             }
+                                                                         ]
+                                                          }		
+                                                 });
+                                                                
+                                                                
+				//un fois une ligne cliqué sur la table Candidat la selectionnr en ajoutant a classe : row_selected  
+                          $('#DTcandidats tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+                            
+                             				 
+					
+				
+				
+                                    						
+				
+			
+                            });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+	    <a id="ajouterFO" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
+            <a id="modifierFO" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
+            <a id="supprimerFO" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+		{% endif %}
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

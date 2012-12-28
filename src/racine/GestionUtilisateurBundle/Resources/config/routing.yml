@@ -1,9 +1,5 @@
 
-# Ajout de l'utilisateur 
-racine_gestion_utilisateur_AjouterUtilisateur_page:
-    pattern:  /Admin/Utilisateur/Ajouter
-    defaults: { _controller: racineGestionUtilisateurBundle:Ajouter:Ajouter }
-    
+
 #lister la liste des utilisateurs
 Admin_liste_Utilisateur:
     pattern:  /Admin/Utilisateur/
@@ -17,11 +13,26 @@ Admin_liste_Roles:
 Admin_Ajout_Utilisateur:
     pattern:  /Admin/Utilisateur/add
     defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:Add }
-   
+
+#Gestion Candidat
+
+Admin_liste_Candidats :
+    pattern:  /Admin/Candidat/
+    defaults: { _controller: racineGestionUtilisateurBundle:Candidat:Index }
+
+Admin_liste_Candidats_nonvalides :
+    pattern:  /Admin/Candidat/NV
+    defaults: { _controller: racineGestionUtilisateurBundle:Candidat:getInvalid }
+
+Admin_delete_Candidat :
+    pattern:  /Admin/Candidat/delete
+    defaults: { _controller: racineGestionUtilisateurBundle:Candidat:delete }
+
 #Authentification
 login : 
     pattern : /Admin/login
     defaults : { _controller: racineGestionUtilisateurBundle:Authentification:Login }
+
 Admin_logout:
     pattern : /Admin/logout
     defaults : { _controller: racineGestionUtilisateurBundle:Authentification:Logout }
@@ -29,3 +40,11 @@ Admin_logout:
 _security_check:
     pattern: /Admin/login_check
 
+Admin_modif_Utilisateur:
+     pattern : /Admin/Utilisateur/edit
+     defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:Edit }
+
+Admin_delete_Utilisateur:
+     pattern : /Admin/Utilisateur/delete
+     defaults: { _controller: racineGestionUtilisateurBundle:Utilisateur:Delete }
+     

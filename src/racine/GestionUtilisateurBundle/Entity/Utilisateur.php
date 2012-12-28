@@ -25,6 +25,26 @@ class Utilisateur implements UserInterface , \Serializable
      *
      */
     private $groupes;
+
+    
+     /**
+     * @ORM\OneToMany(targetEntity="racine\GestionTestsBundle\Entity\Test",mappedBy="utilisateur")
+     *
+     */
+    private $tests;
+    
+       /**
+     * @ORM\OneToMany(targetEntity="racine\GestionTestsBundle\Entity\Question",mappedBy="utilisateur")
+     *
+     */
+    private $questions;
+    
+    
+
+    
+    
+    
+    
     
     /**
      * @var integer $id
@@ -85,6 +105,12 @@ class Utilisateur implements UserInterface , \Serializable
      */
     private $salt;
    
+    /**
+     * @var boolean $isValid
+     *
+     * @ORM\Column(name="isValid", type="boolean")
+     */
+    private $isValid;
    
     public function __construct()
     {
@@ -278,9 +304,98 @@ class Utilisateur implements UserInterface , \Serializable
        
    }
    
+   public function getIsValid()
+   {
+       return $this->isValid;
+   }
    
+   public function setIsValid($bool)
+   {
+       $this->isValid = $bool;
+       return $this;
+       
+   }
    
-   // on a ajouté ce code 
+       /**
+     * Add tests
+     *
+     * @param racine\GestionTestsBundle\Entity\Test tests
+     * @return Utilisateur
+     */
+    public function addTests(\racine\GestionTestsBundle\Entity\Test $tests)
+    {
+        $this->tests[] = $tests;
+    
+        return $this;
+    }
+
+    /**
+     * Remove tests
+     *
+     * @param racine\GestionTestsBundle\Entity\Test $tests
+     */
+    public function removeTests(\racine\GestionTestsBundle\Entity\Test $tests)
+    {
+        $this->tests->removeElement($tests);
+    }
+    
+    /**
+     * Get tests
+     *
+     * @return Doctrine\Common\Collections\ArrayCollection 
+     */
+    public function getTests()
+    {
+        $this->tests;
+    }
+   
+    
+    
+           /**
+     * Add questions
+     *
+     * @param racine\GestionTestsBundle\Entity\Question $questions
+     * @return Utilisateur
+     */
+    public function addQuestions(\racine\GestionTestsBundle\Entity\Question $questions)
+    {
+        $this->questions[] = $questions;
+    
+        return $this;
+    }
+
+    /**
+     * Remove questions
+     *
+     * @param racine\GestionTestsBundle\Entity\Question $questions
+     */
+    public function removeQuestions(\racine\GestionTestsBundle\Entity\Question $questions)
+    {
+        $this->questions->removeElement($questions);
+    }
+    
+    /**
+     * Get questions
+     *
+     * @return Doctrine\Common\Collections\ArrayCollection 
+     */
+    public function getQuestions()
+    {
+        $this->questions;
+    }
+    
+    
+    
+    
+   /*
+    * solution pour erreur AbstractToken serialization fails : 
+    * il faut serialiser l'objet pour que ça marche, en effet dans
+    * la version 5.3 de php ça ne pose pas de problème mais en 5.4 
+    * ça génére des erreurs .
+    * 
+    * https://github.com/symfony/symfony/issues/3691
+    * 
+    */
    
    
      /**
@@ -299,6 +414,7 @@ class Utilisateur implements UserInterface , \Serializable
             $this->email,
             $this->salt,
             $this->password,
+            $this->isValid
             
         ));
     }
@@ -315,7 +431,8 @@ class Utilisateur implements UserInterface , \Serializable
             $this->prenom,
             $this->email,
             $this->salt,
-            $this->password
+            $this->password,
+            $this->isValid,
         ) = \unserialize($serialized);
     }
 

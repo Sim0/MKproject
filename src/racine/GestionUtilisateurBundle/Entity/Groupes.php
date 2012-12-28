@@ -7,6 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Role\RoleInterface;
+
 /**
  * racine\GestionUtilisateurBundle\Entity\Groupes
  *
@@ -21,6 +22,13 @@ class Groupes implements RoleInterface , \Serializable
      * @ORM\ManyToMany(targetEntity="Utilisateur", mappedBy="groupes")
      */
     private $utilisateurs;
+     
+    /**
+     * @ORM\ManyToMany(targetEntity="racine\GestionCandidatsBundle\Entity\Candidat", mappedBy="groupes")
+     */
+    private $candidats;
+    
+    
     /**
      * @var integer $id
      *
@@ -47,6 +55,7 @@ class Groupes implements RoleInterface , \Serializable
    public function __construct()
    {
         $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidats = new \Doctrine\Common\Collections\ArrayCollection();
    }
 
    

@@ -2,3 +2,7 @@ racine_gestion_tests_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: racineGestionTestsBundle:Default:index }
 
+_get_creneau:
+    pattern:  /Candidat/inscription/creneau
+    defaults: { _controller: racineGestionTestsBundle:Creneau:getCreneau }
+

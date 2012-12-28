@@ -122,16 +122,90 @@
                         <samp>Tel</samp>
                         <input type="text" class="input-text small a" name="addTelV" disabled="disabled" /> 
                         </div></br>
-                        <table>
-                            <thead><tr>
-                            <th>Id_groupe</th>
-                            <th>nom_groupe</th>
-                            <th>nom_role</th>
-			</tr>
-                        </table>
+              
                        <div class="form-row">
                         
                         <input type="button" id="addUser" class="button green-button" name="addUserform"  value="Ajouter" /> 
+                        </div></br>
+                        
+                      </fieldset>  
+                        
+                        </form>
+                
+                
+                </div>
+                
+                 <div id="modBox" class="wizard-box modal-box"> 
+                   <form id="modusersform" method="POST">
+
+                        <fieldset class="sectionwrap">
+                              <legend>Modifier Utilisateurs</legend>
+                             <p><i>Entrez les identifiants du nouveau utilisateur , puis procédez aux étapes suivantes.( tous les champs sont obligatoires)</i></p>
+                               <div id="opBox">			
+                               <div class="form-row">
+                               <samp>Username :</samp>
+                               <input type="text" class="input-text medium a" name="modPseudo"  disabled/> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Nouveau mot de passe :</samp>
+                               <input type="password" class="input-text medium a" name="modPassword" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Confirmer Mot de passe :</samp>
+                               <input type="password" class="input-text medium a" name="mcPassword" /> 
+                               </div></br>
+                               </div>
+                       </fieldset>
+                       
+                       <fieldset class="sectionwrap">
+                          <legend>Informations personnelles</legend>
+                          <p><i>Entrez les informations correspondant au nouveau utilisateur.</i></p>
+                       <div id="opBox">
+                        <div class="form-row">
+                        <samp>Nom</samp>
+                        <input type="text" class="input-text medium a" name="modNom" /> 
+                       
+                         <samp>Prénom</samp>
+                        <input type="text" class="input-text medium a" name="modPrenom" /> </br>
+                         </div>
+                        <div class="form-row">
+                        <samp>Email</samp>
+                        <input type="text" class="input-text medium a" name="modEmail" /> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Tel</samp>
+                        <input type="text" class="input-text small a" name="modTel" /> 
+                        </div></br>
+                       </div>
+                        </fieldset>
+                       
+                      
+                     <fieldset class="sectionwrap">
+                          <legend>Validation</legend>
+                             <p><i>Vérifier que les informations que vous avez choisi sont correctes.</i></p>
+                         <div class="form-row">
+                         <samp>Username :</samp>
+                               <input type="text" class="input-text medium a" name="modPseudoV" disabled="disabled" /> 
+                               </div></br>
+                        <div class="form-row">     
+                          <samp>Nom</samp>
+                        <input type="text" class="input-text  small a" name="modNomV" disabled="disabled" /> 
+                        
+                        <samp>Prénom</samp>
+                        <input type="text" class="input-text small a" name="modPrenomV"  disabled="disabled"/> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Email</samp>
+                        <input type="text" class="input-text small a" name="modEmailV" disabled="disabled"/> 
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Tel</samp>
+                        <input type="text" class="input-text small a" name="modTelV" disabled="disabled" /> 
+                        </div></br>
+                        
+                       <div class="form-row">
+                        
+                        <input type="button" id="modUser" class="button green-button" name="modUserform"  value="Modifier" /> 
                         </div></br>
                         
                       </fieldset>  
@@ -154,7 +228,7 @@
 							  "bJQueryUI": true,
 							  "sPaginationType": "full_numbers",
 							  "oTableTools": {
-        									    "sSwfPath": "./js/swf/copy_csv_xls_pdf.swf",
+        									    "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
         									    "aButtons": [
 																"copy","print",
 																{
@@ -319,7 +393,7 @@
                                                                 return false;
                                                             },
                                                             error: function (jqHx,status) {
-                                                                alert(status);
+                                                                
                                                                 return false;
                                                             }
 									   
@@ -344,7 +418,7 @@
 							
 							if(selectedRow.length !== 0)
 							{		
-						            $.msgbox("êtes-vous sûr de vouloir supprimer ce fournisseur?", {
+						            $.msgbox("êtes-vous sûr de vouloir supprimer cet utilisateur?", {
 														type: "confirm",
 													    
 														buttons : [
@@ -354,9 +428,9 @@
 													function(result) {
 														if(result == "Oui")
 														{
-															id = $('#DTfournisseur tr.row_selected td:first').text();
+															id = $('#DTutilisateurs tr.row_selected td:first').text();
 															$.ajax({
-																url:"./php/db/fournisseurs/delete_fournisseur.php",
+																url:"{{ path('Admin_delete_Utilisateur') }}",
 																dataType:'json',
 																type:'post',
 																data : {
@@ -364,10 +438,10 @@
 																	
 																},
 																success:function(data){
-																	if(data.state == "success")
+																	if(data.status == "200")
 																	{
 																		myTable.fnDeleteRow(selectedRow[0]);
-																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le fournisseur est définitivement supprimé de la base de donnée.</div></div>');
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : L\'utilisateur est définitivement supprimé de la base de donnée.</div></div>');
 																		
 																	}
 																	else if(data.state == "error")
@@ -403,7 +477,7 @@
 										}
 										else
 										{
-											$.msgbox("Aucun fournisseur n'est sélectionné pour la suppresion !");
+											$.msgbox("Aucun utilisateurs n'est sélectionné pour la suppresion !");
 										}
 										
 											
@@ -413,9 +487,148 @@
 										});
 										
 				
-			$('#modifierFO').live('click',function(){ alert('modifier');
+			$('#modifierFO').live('click',function(e){ 
+                        
+					    var pseudo;
+                                            var nom;
+                                            var prenom;
+                                            var email;
+                                            var tel;
+                                            var password;
+                                            var id;
+                                            
+                                            id = $('#DTutilisateurs tr.row_selected td:first').text();
+                                            pseudo  = $('#DTutilisateurs tr.row_selected td:eq(1)').text();
+                                            nom = $('#DTutilisateurs tr.row_selected td:eq(2)').text();
+                                            prenom = $('#DTutilisateurs tr.row_selected td:eq(3)').text();
+                                            email = $('#DTutilisateurs tr.row_selected td:eq(4)').text();
+                                            tel = $('#DTutilisateurs tr.row_selected td:eq(5)').text();
+                                            
+                                             
+                                            var usersModModal = $("#modBox").modal();
+                                           $('input[name="modPseudo"]').val(pseudo);
+                                              $("input[name='modNom']").val(nom);
+                                               $("input[name='modEmail']").val(email);
+                                                $("input[name='modPrenom']").val(prenom);
+                                                 $("input[name='modTel']").val(tel);
+                                           var myform=new formtowizard({
+                                                                        formid: 'modusersform',
+                                                                        persistsection: false,
+                                                                        revealfx: ['slide', 500],
+                                                                         onpagechangestart:function($, i, $fieldset){
+                                                                                                                var validated=true
+                                                                                                                switch(i)
+                                                                                                                {case 0:if($('input[name="modPseudo"]').val() == "" || $('input[name="modPassword"]').val()== "" || $('input[name="mcPassword"]').val() == "")
+                                                                                                                         validated = false;
+                                                                                                                        else 
+                                                                                                                            {
+                                                                                                                                
+                                                                                                                                $('input[name="modPseudoV"]').val($('input[name="modPseudo"]').val());
+                                                                                                                                pseudo = $('input[name="modPseudoV"]').val();
+                                                                                                                                password = $('input[name="modPassword"]').val();
+                                                                                                                               
+                                                                                                                                
+                                                                                                                                }
+                                                                                                                        
+                                                                                                                        break;
+                                                                                                                 case 1: if($("input[name='modNom']").val() == "" || $("input[name='modPrenom']").val()== "" || $("input[name='modTel']").val() == "" || $("input[name='modEmail']").val() == "")
+                                                                                                                        validated = false;
+                                                                                                                        else
+                                                                                                                            {
+                                                                                                                                $('input[name="modNomV"]').val($('input[name="modNom"]').val());
+                                                                                                                                nom = $('input[name="modNomV"]').val();
+                                                                                                                                $('input[name="modPrenomV"]').val($('input[name="modPrenom"]').val());
+                                                                                                                                prenom = $('input[name="modPrenomV"]').val();
+                                                                                                                                $('input[name="modTelV"]').val($('input[name="modTel"]').val());
+                                                                                                                                tel = $('input[name="modTelV"]').val();
+                                                                                                                                $('input[name="modEmailV"]').val($('input[name="modEmail"]').val());
+                                                                                                                                email = $('input[name="modEmailV"]').val();
+                                                                                                                                
+                                                                                                                                }
+                                                                                                                     break;
+                                                                                                               
+                                                                                                                 case 2: 
+                                                                                                                     
+                                                                                                                     break;
+                                                                                                                 default : validated = false; break;
+                                                                                                                    }
+                                                                                                                /**var $els=$fieldset.find('input[type="text"], textarea') //get textbox and textarea elements
+                                                                                                                $els.each(function(){ //loop thru these elements
+                                                                                                                if ($(this).val()==""){ //if element is empty
+                                                                                                                alert("Please fill out the field "+$(this).attr('id'))
+                                                                                                                $(this).focus()
+                                                                                                                validated=false
+                                                                                                                return false //break out of each() loop
+                                                                                                                }
+                                                                                                                })**/
+                                                                                                                return validated //if this variable returns false, user is prevented from going on to next form page
+                                                                       }});
+                                                                      
+                                      $('#modUser').live('click',function(){ 
+                                                            usersModModal.close();
+                                                            $.ajax({
+                                                            type: 'POST',
+                                                            url: "{{ path('Admin_modif_Utilisateur') }}",
+                                                            data: {
+                                                                id: id,
+                                                                nom: nom,
+                                                                prenom: prenom,
+                                                                tel : tel,
+                                                                email: email,
+                                                                pseudo : pseudo,
+                                                                password : password,
+                                                                //idrole : idrole// devrait être haché avant de l'envoyer!!!!
+
+                                                            },
+                                                            dataType : 'json',
+                                                            success: function (data,status) {
+                                                                if(data.status == "200")
+                                                                    {
+                                                                            $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : L\' utilisateur a été correctement modifié.</div></div>');
+
+                                                                $('#DTutilisateurs tr.row_selected td:eq(0)').text(data.info);
+                                                                $('#DTutilisateurs tr.row_selected td:eq(1)').text(pseudo);
+                                                                $('#DTutilisateurs tr.row_selected td:eq(2)').text(nom);
+                                                                $('#DTutilisateurs tr.row_selected td:eq(3)').text(prenom);
+                                                                $('#DTutilisateurs tr.row_selected td:eq(4)').text(email);
+                                                                $('#DTutilisateurs tr.row_selected td:eq(5)').text(tel);
+                                                               
+                                                                 
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout de l\'utilisateur veuillez ressayer. </div></div>')
+
+                                                                }
+                                                                return false;
+                                                            },
+                                                            error: function (jqHx,status) {
+                                                               
+                                                                return false;
+                                                            }
+									   
+							    		
+							    	
+							    	
+							    	
+							    
+							  });
+                               
+                                  
+                                                                    });
+				e.preventDefault();
+                        
+                                                                
+                        
+                        
+                        
+                        
+                        
+                        
+                        
 										});
-                                                                                });
+                            });
 			
 	
 		</script>
@@ -423,10 +636,11 @@
 	
 		<br/>
 		
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
 	    <a id="ajouterFO" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
             <a id="modifierFO" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
             <a id="supprimerFO" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
-		
+		{% endif %}
 	
 		
 	</div>

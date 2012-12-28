@@ -1,0 +1,41 @@
+{# empty Twig template #}
+
+{% block TabsContenor %}
+
+<div class="tabs-contenor">
+       
+       <div class="profile">
+         <form action="http://infynitix.com/" target="_blank">
+         <img src="images/user.jpg" alt="User" />
+         <h2>{{ app.user.username }} :</h2>
+   {% if is_granted('ROLE_SUPER_ADMIN') %}
+  Superadmin
+  {% elseif is_granted('ROLE_ADMIN')%}
+  admin
+  {% else %}
+  pas de role
+  
+   {% endif %} 
+
+
+
+         <h4>Reportin Website <input type="submit" class="common-button" value="infynitix.com" /></h4>
+         <h4><a href="#">Help</a> . <a href="#">Account</a> . <a href="{{ path('Admin_logout') }}">Logout--<img src="images/icons/login.jpg" alt="login" /></a></h4>
+         </form>      
+       </div>
+        
+       <h3><a href="#">Dashboard</a> <img src="images/icons/arrow.jpg" alt="Arrow" /> <a href="#">Level2</a> <img src="images/icons/arrow.jpg" alt="Arrow" /> <a href="#">Level3</a></h3>
+       <h1>DASHBOARD</h1>
+       
+  <div class="tabs_links">
+                  <ul>
+                          
+                             <li><a href="Utilisateurs">Utilisateurs</a></li>
+                
+           </ul>
+       </div>
+        </div>
+       
+    
+
+{% endblock %}

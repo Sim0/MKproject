@@ -1,38 +1,36 @@
 {#  Twig form template #}
-{% extends "racineGestionUtilisateurBundle:Templates:header.html.twig" %}
+{% extends "racineGestionCandidatsBundle:Templates:header.html.twig" %}
 
 
 {%block head %} {{parent()}} {% endblock %}
 {%block header %}   
-
      <p class="p-line"> {% if error %}
                          <span class="error">{% if (error.message == "Bad credentials")
                                                      %}
-                             couple Username/Password erroné !!
+                             code session erroné !!
                              {% endif %}</span>
                                                  {% endif %}</p>
             
 				<div id="login_wrapper" class="form_wrapper">
                     
-					<form class="login active" action="{{ path("_security_check") }}"  method="post" id="login">
+					<form class="login active" action="{{ path("_security_check_Candidat") }}"  method="post" >
 						 <h3>Login</h3>
 						     
                                                     <div>
                                                         
-                                                     <label for="username">Username :  </label>
-                                                     <input type="text"  class="input-text" name="_username" value="{{ last_username }}" />
+                                                     <label for="username">Code session :  </label>
+                                                     <input type="text"  class="input-text" name="_codesession" value="{{ last_username }}" />
 						     
 						    </div>
 						<div>
-                                                     <label for="password">Password :  </label>
-                                                     <input type="password"  name="_password" class="input-text" />
+                                                     <label for="password">Resaisissez code session :  </label>
+                                                     <input type="text"  name="_codesessionpass" class="input-text" />
 					             
 						</div>
 						<div class="bottom">
-							<div class="remember"><input type="checkbox" name="_remember_me" checked/><span>Se souvenir de moi</span></div>
-                            
+							                           
 							<input type="submit" value="se connecter" class="button"  />
-                            
+                            <a href="{{path('_Candidat_inscription')}}"  >Vous n'êtes pas encore inscrit ?</a>
 							<div class="clear"></div>
 						</div>
 					</form>
@@ -44,7 +42,7 @@
                     
                  </div>
 
- 
+
 
 {% endblock %}
 

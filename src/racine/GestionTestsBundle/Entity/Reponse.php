@@ -32,19 +32,20 @@ class Reponse
     private $id;
 
     /**
-     * @var string $Reponse_correcte
+     * @var boolean $isCorrect
      *
-     * @ORM\Column(name="Reponse_correcte", type="string", length=255)
+     * @ORM\Column(name="isCorrect", type="boolean")
      */
-    private $Reponse_correcte;
+    private $isCorrect;
 
     /**
-     * @var string $Reponse_possible
+     * @var string $description
      *
-     * @ORM\Column(name="Reponse_possible", type="text" )
+     * @ORM\Column(name="description", type="string",length=255)
      */
-    private $Reponse_possible;
-
+    
+    private $description;
+    
 
     /**
      * Get id
@@ -57,50 +58,54 @@ class Reponse
     }
 
     /**
-     * Set Reponse_correcte
+     * Set isCorrect
      *
-     * @param string $reponseCorrecte
+     * @param boolean $state
      * @return Reponse
      */
-    public function setReponseCorrecte($reponseCorrecte)
+    public function setIsCorrect($state)
     {
-        $this->Reponse_correcte = $reponseCorrecte;
+        $this->isCorrect = $state;
     
         return $this;
     }
 
     /**
-     * Get Reponse_correcte
+     * Get isCorrect
      *
-     * @return string 
+     * @return boolean
      */
-    public function getReponseCorrecte()
+    public function getIsCorrect()
     {
-        return $this->Reponse_correcte;
+        return $this->isCorrect;
     }
-
+    
+    
     /**
-     * Set Reponse_possible
+     * Set description
      *
-     * @param string $reponsePossible
+     * @param string $description
      * @return Reponse
      */
-    public function setReponsePossible($reponsePossible)
+    public function setDescription($description)
     {
-        $this->Reponse_possible = $reponsePossible;
+        $this->description = $description;
     
         return $this;
     }
 
-    /**
-     * Get Reponse_possible
+     /**
+     * Get description
      *
-     * @return string 
+     * @return string
      */
-    public function getReponsePossible()
+    public function getDescription()
     {
-        return $this->Reponse_possible;
+        return $this->description ;
+    
+        
     }
+
 
     /**
      * Set question

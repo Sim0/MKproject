@@ -1,0 +1,189 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Candidats</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+
+  
+<div id="content">
+        <div class="tab_content" id="Candidats"  >
+   <!--ici le contenu du tab fournisseurs--> 
+        <div class="element-box"> 
+        <h1>Nouveaux Candidats </h1>
+                     <p>Cette table affiche  tous les Candidats en attente de validation </p>
+                     <br />     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+        <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTcandidatsNV">
+	<thead><tr>
+			<th>Id_candidat</th>
+			<th>Code Session</th>
+                        <th>Prenom </th>
+			<th>Nom </th>
+			<th>Ecole</th>
+			<th>Filiere</th>
+                        <th>Ecole</th>
+			<th>Tel</th>
+                        <th>Resultat</th>
+                        
+                        
+                        
+		</tr>
+	</thead>
+	<tbody>
+		</table>
+                
+                
+                 
+		
+<script type="text/javascript">
+	$(document).ready(function(){
+				
+	     // intanciation et paramétrage du Datatable "Candidat" 			
+            var myTable = $('#DTcandidatsNV').dataTable({
+
+                           "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+                           "bProcessing": true,
+                                           "sAjaxSource": "{{ path('Admin_liste_Candidats_nonvalides') }}",
+                                           "bJQueryUI": true,
+                                           "sPaginationType": "full_numbers",
+                                           "oTableTools": {  
+                                                             "sRowSelect": "multi",
+                                                             "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
+                                                             "aButtons": [
+                                                                             "copy","print",
+                                                                             {       
+                                                                                     "sExtends":    "collection",
+                                                                                     "sButtonText": "Enregistrer sous",
+                                                                                     "aButtons":    [ "csv","xls", "pdf" ]
+                                                                             }
+                                                                         ]
+                                                          }		
+                                                 });
+                          
+                          
+                          
+                          $('#DTcandidatsNV tr').click( function() {
+                                                                  $(this).toggleClass('row_selected');
+                                                             } );
+                                                                
+			$('#validerCA').live('click',function()
+                        {
+                          //$('#CandidatsNV tr.row_seletecd').each(index, tr );
+                            
+				   });
+			$('#supprimerCA').live('click',function()
+                        {
+                            selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length == 1)
+							{		
+						            $.msgbox("êtes-vous sûr de vouloir supprimer cet candidat?", {
+														type: "confirm",
+													    
+														buttons : [
+													        {type: "submit", value: "Oui"},{type: "submit", value: "Non"}
+															]},
+													
+													function(result) {
+														if(result == "Oui")
+														{
+															codesession = $('#DTutilisateurs tr.row_selected td:first').text();
+															$.ajax({
+																url:"{{ path('Admin_delete_Candidat') }}",
+																dataType:'json',
+																type:'post',
+																data : {
+																	id:id
+																	
+																},
+																success:function(data){
+																	if(data.status == "200")
+																	{
+																		myTable.fnDeleteRow(selectedRow[0]);
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le candidat est définitivement supprimé de la base de donnée.</div></div>');
+																		
+																	}
+																	else if(data.state == "error")
+																	{
+																		
+										         					   	$('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong>'+ data.info +'</div></div>');
+																	
+																	}
+																	
+																},
+																error:function(){
+																	
+																}
+																
+																
+																
+															});
+															
+															
+															
+															
+														}
+														else if(result =="Non" )
+														{
+															
+															//$.msgbox("Votre demande de suppresion est annulée !",{type:info});
+														}
+														
+														
+														
+													});
+													
+										}
+										else if(selectedRow.length == 0)
+										{
+											$.msgbox("Aucun candidat n'est sélectionné pour la suppresion !");
+										}
+                                                                                else
+                                                                                {
+                                                                                        $.msgbox("Sélectionner un seul candidat !");
+                                                                                }
+										
+											
+											
+                            
+                            
+                            });
+                                    						
+				
+			
+                            });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
+	    <a id="validerCA" class="button" href="#"><i class="icon-plus"></i>Valider</a>
+            <a id="supprimerCA" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+		{% endif %}
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

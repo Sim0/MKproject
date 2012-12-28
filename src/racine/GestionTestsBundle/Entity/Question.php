@@ -14,18 +14,22 @@ class Question
 {
  
    /**
-    * @ORM\OneToMany(targetEntity="Reponse", mappedBy="Question")
+    * @ORM\OneToMany(targetEntity="Reponse", mappedBy="question")
     */
     private $reponses;
     
-    
-    
     /**
-     * @ORM\ManyToMany(targetEntity="Test", inversedBy="questions")
-     *
-     */
-    private $tests;
+    * @ORM\ManyToOne(targetEntity="Theme",inversedBy="questions")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $theme;
     
+    
+   /**
+    * @ORM\ManyToOne(targetEntity="racine\GestionUtilisateurBundle\Entity\Utilisateur",inversedBy="questions")
+    * @ORM\JoinColumn(nullable=false)
+    */
+    private $utilisateur;
     
     
     /**
@@ -36,28 +40,28 @@ class Question
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string $Theme
-     *
-     * @ORM\Column(name="Theme", type="string", length=50)
-     */
-    private $Theme;
-
+    
     /**
      * @var string $Type
      *
      * @ORM\Column(name="Type", type="string", length=50)
      */
-    private $Type;
+    private $type;
 
     /**
      * @var string $Text
      *
      * @ORM\Column(name="Text", type="string", length=255)
      */
-    private $Text;
-
+    private $description;
+    
+    /**
+     * @var string $
+     *
+     * @ORM\Column(name="Text", type="string", length=255)
+     */
+    
+    
     
     
     public function __toString() 
@@ -79,12 +83,12 @@ class Question
     /**
      * Set Theme
      *
-     * @param string $theme
+     * @param racine\GestionTestsBundle\Entity\Theme $theme
      * @return Question
      */
     public function setTheme($theme)
     {
-        $this->Theme = $theme;
+        $this->theme = $theme;
     
         return $this;
     }
@@ -92,11 +96,11 @@ class Question
     /**
      * Get Theme
      *
-     * @return string 
+     * @return racine\GestionTestsBundle\Entity\Theme 
      */
     public function getTheme()
     {
-        return $this->Theme;
+        return $this->theme;
     }
 
     /**
@@ -107,7 +111,7 @@ class Question
      */
     public function setType($type)
     {
-        $this->Type = $type;
+        $this->type = $type;
     
         return $this;
     }
@@ -119,30 +123,30 @@ class Question
      */
     public function getType()
     {
-        return $this->Type;
+        return $this->type;
     }
 
     /**
-     * Set Text
+     * Set Description
      *
-     * @param string $text
+     * @param string $Description
      * @return Question
      */
-    public function setText($text)
+    public function setDescription($description)
     {
-        $this->Text = $text;
+        $this->description = $description;
     
         return $this;
     }
 
     /**
-     * Get Text
+     * Get Description
      *
      * @return string 
      */
-    public function getText()
+    public function getDescription()
     {
-        return $this->Text;
+        return $this->description;
     }
     /**
      * Constructor
@@ -150,7 +154,7 @@ class Question
     public function __construct()
     {
         $this->reponses = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->tests = new \Doctrine\Common\Collections\ArrayCollection();
+        
     }
     
     /**
@@ -185,37 +189,29 @@ class Question
     {
         return $this->reponses;
     }
-
+    
     /**
-     * Add tests
+     * Set Utilisateur
      *
-     * @param racine\GestionTestsBundle\Entity\Test $tests
+     * @param  $utilisateur
      * @return Question
      */
-    public function addTest(\racine\GestionTestsBundle\Entity\Test $tests)
+    public function setUtilisateur($utilisateur)
     {
-        $this->tests[] = $tests;
+        $this->utilisateur = $utilisateur;
     
         return $this;
     }
 
     /**
-     * Remove tests
+     * Get Utilisateur
      *
-     * @param racine\GestionTestsBundle\Entity\Test $tests
+     * @return racine\GestionUtilisateursBundle\Entity\Utilisateur
      */
-    public function removeTest(\racine\GestionTestsBundle\Entity\Test $tests)
+    public function getUtilisateur()
     {
-        $this->tests->removeElement($tests);
+        return $this->utilisateur;
     }
 
-    /**
-     * Get tests
-     *
-     * @return Doctrine\Common\Collections\ArrayCollection 
-     */
-    public function getTests()
-    {
-        return $this->tests;
-    }
+
 }

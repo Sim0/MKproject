@@ -12,12 +12,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Test
 {
-    
+     /**
+    * @ORM\OneToMany(targetEntity="Creneau", mappedBy="test")
+    */
+    private $creneaux;
+   
     /**
-     * @ORM\ManyToMany(targetEntity="Question", inversedBy="tests")
-     *
-     */
-    private $questions;
+    * @ORM\ManyToOne(targetEntity="racine\GestionUtilisateurBundle\Entity\Utilisateur", inversedBy="tests" )
+    */
+    private $utilisateur;
+    
+    
+    
+    
     
     /**
      * @var integer $id
@@ -29,39 +36,39 @@ class Test
     private $id;
 
     /**
-     * @var string $Nom
+     * @var string $nom
      *
-     * @ORM\Column(name="Nom", type="string", length=50)
+     * @ORM\Column(name="nom", type="string", length=50)
      */
-    private $Nom;
+    private $nom;
 
     /**
-     * @var integer $Duree
+     * @var integer $duree
      *
-     * @ORM\Column(name="Duree", type="integer")
+     * @ORM\Column(name="duree", type="integer")
      */
-    private $Duree;
+    private $duree;
 
     /**
-     * @var integer $Nbr_questions
+     * @var integer $nbr_questions
      *
      * @ORM\Column(name="Nbr_questions", type="integer")
      */
-    private $Nbr_questions;
+    private $nbr_questions;
 
     /**
-     * @var integer $Duree_max_question
+     * @var integer $duree_max_question
      *
-     * @ORM\Column(name="Duree_max_question", type="integer")
+     * @ORM\Column(name="duree_max_question", type="integer")
      */
-    private $Duree_max_question;
+    private $duree_max_question;
 
     /**
-     * @var string $Description
+     * @var string $cescription
      *
-     * @ORM\Column(name="Description", type="text")
+     * @ORM\Column(name="description", type="text")
      */
-    private $Description;
+    private $description;
 
     
     public function __toString() 
@@ -87,7 +94,7 @@ class Test
      */
     public function setNom($nom)
     {
-        $this->Nom = $nom;
+        $this->nom = $nom;
     
         return $this;
     }
@@ -99,7 +106,7 @@ class Test
      */
     public function getNom()
     {
-        return $this->Nom;
+        return $this->nom;
     }
 
     /**
@@ -110,7 +117,7 @@ class Test
      */
     public function setDuree($duree)
     {
-        $this->Duree = $duree;
+        $this->duree = $duree;
     
         return $this;
     }
@@ -122,7 +129,7 @@ class Test
      */
     public function getDuree()
     {
-        return $this->Duree;
+        return $this->duree;
     }
 
     /**
@@ -133,7 +140,7 @@ class Test
      */
     public function setNbrQuestions($nbrQuestions)
     {
-        $this->Nbr_questions = $nbrQuestions;
+        $this->nbr_questions = $nbrQuestions;
     
         return $this;
     }
@@ -145,7 +152,7 @@ class Test
      */
     public function getNbrQuestions()
     {
-        return $this->Nbr_questions;
+        return $this->nbr_questions;
     }
 
     /**
@@ -156,7 +163,7 @@ class Test
      */
     public function setDureeMaxQuestion($dureeMaxQuestion)
     {
-        $this->Duree_max_question = $dureeMaxQuestion;
+        $this->duree_max_question = $dureeMaxQuestion;
     
         return $this;
     }
@@ -168,18 +175,18 @@ class Test
      */
     public function getDureeMaxQuestion()
     {
-        return $this->Duree_max_question;
+        return $this->duree_max_question;
     }
 
     /**
-     * Set Description
+     * Set description
      *
      * @param string $description
      * @return Test
      */
     public function setDescription($description)
     {
-        $this->Description = $description;
+        $this->description = $description;
     
         return $this;
     }
@@ -191,7 +198,7 @@ class Test
      */
     public function getDescription()
     {
-        return $this->Description;
+        return $this->description;
     }
     /**
      * Constructor
@@ -202,35 +209,59 @@ class Test
     }
     
     /**
-     * Add questions
+     * Add creneaux
      *
-     * @param racine\GestionTestsBundle\Entity\Test $questions
+     * @param racine\GestionTestsBundle\Entity\Creneau $creneau
      * @return Test
      */
-    public function addQuestion(\racine\GestionTestsBundle\Entity\Test $questions)
+    public function addCreneaux(\racine\GestionTestsBundle\Entity\Reponse $creneau)
     {
-        $this->questions[] = $questions;
+        $this->creneaux[] = $creneau;
     
         return $this;
     }
 
     /**
-     * Remove questions
+     * Remove creneaux
      *
-     * @param racine\GestionTestsBundle\Entity\Test $questions
+     * @param racine\GestionTestsBundle\Entity\Creneau $creneau
      */
-    public function removeQuestion(\racine\GestionTestsBundle\Entity\Test $questions)
+    public function removeCreneaux(\racine\GestionTestsBundle\Entity\Reponse $creneau)
     {
-        $this->questions->removeElement($questions);
+        $this->creneaux->removeElement($creneau);
     }
 
     /**
-     * Get questions
+     * Get creneaux
      *
      * @return Doctrine\Common\Collections\ArrayCollection 
      */
-    public function getQuestions()
+    public function getCreneaux()
     {
-        return $this->questions;
+        return $this->creneaux;
     }
+    
+    /**
+     * Set Utilisateur
+     *
+     * @param  $utilisateur
+     * @return Test
+     */
+    public function setUtilisateur($utilisateur)
+    {
+        $this->utilisateur = $utilisateur;
+    
+        return $this;
+    }
+
+    /**
+     * Get Utilisateur
+     *
+     * @return racine\GestionUtilisateursBundle\Entity\Utilisateur
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
+    }
+    
 }
