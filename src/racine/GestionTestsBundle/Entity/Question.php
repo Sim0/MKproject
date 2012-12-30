@@ -15,6 +15,8 @@ class Question
  
    /**
     * @ORM\OneToMany(targetEntity="Reponse", mappedBy="question")
+    * cascade={"persist"}
+    *
     */
     private $reponses;
     
@@ -41,25 +43,16 @@ class Question
      */
     private $id;
     
-    /**
-     * @var string $Type
-     *
-     * @ORM\Column(name="Type", type="string", length=50)
-     */
-    private $type;
+    
 
     /**
-     * @var string $Text
+     * @var string $Description
      *
-     * @ORM\Column(name="Text", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
     
-    /**
-     * @var string $
-     *
-     * @ORM\Column(name="Text", type="string", length=255)
-     */
+    
     
     
     
@@ -103,33 +96,12 @@ class Question
         return $this->theme;
     }
 
-    /**
-     * Set Type
-     *
-     * @param string $type
-     * @return Question
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    
-        return $this;
-    }
-
-    /**
-     * Get Type
-     *
-     * @return string 
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
+   
 
     /**
      * Set Description
      *
-     * @param string $Description
+     * @param string $description
      * @return Question
      */
     public function setDescription($description)

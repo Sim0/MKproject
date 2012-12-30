@@ -12,4 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuestionRepository extends EntityRepository
 {
+    public function selectQuestions()
+    {
+       $q = $this->getEntityManager()->createQuery('Select q.id,q.description,t.title,u.username  from    racineGestionTestsBundle:Question q,
+                                                                                                          racineGestionUtilisateurBundle:Utilisateur u,
+                                                                                                          racineGestionTestsBundle:Theme t
+                                                                                         where  q.theme = t.id   and q.utilisateur = u.id' );
+       return $q->getResult();
+       
+    }
+    
 }

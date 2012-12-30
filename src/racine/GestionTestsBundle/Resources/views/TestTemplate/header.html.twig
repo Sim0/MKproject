@@ -1,0 +1,61 @@
+{# header template #}
+<html>
+{% block head %} 
+<head>
+        {% stylesheets filter=""  'bundles/racinegestiontests/css/*'
+                                  'bundles/racinegestionutilisateur/css/*'
+                                  
+                                  %}
+               <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+         {% endstylesheets %}
+        
+    {% javascripts filter="" output="js/core.js" debug=true '@racineGestionUtilisateurBundle/Resources/public/js/jquery.js' 
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/custom.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery-ui-1.8.13.custom.min.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/fullcalendar.min.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery.dataTables.js' 
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery.fancybox.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/StickyScroller.min.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/elfinder.min.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery.msgbox.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery.simplemodal.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/jquery.purr.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/TableTools.min.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/ZeroClipboard.js'
+                                                            '@racineGestionUtilisateurBundle/Resources/public/js/formwizard.js'
+                                                             'bundles/racinegestiontests/js/default.js' 
+                                                            
+                                                            
+
+                                                             %}
+            <script src="{{ asset_url }}" type="text/javascript"></script>
+     {% endjavascripts %}
+    
+    
+      </head>
+{% endblock %}
+
+{% block header %}
+
+   
+    
+      <body>
+
+<div class="header">
+    
+    <div id="logo"><img src="{{ asset('bundles/racinegestionutilisateur/images/logo.png') }}" alt="Logo" /></div>
+           
+           <div class="top-nav">
+               <ul>
+                   <li><a href="#" title="Dashboard" class="active" ><img src="images/icons/dashboard.png" alt="Dasboard" />Dashboard</a></li><!--Add "active" Class for Current Page-->
+                  
+               </ul> 
+              
+           </div>
+    
+   </div>
+
+{% endblock %}
+
+
+

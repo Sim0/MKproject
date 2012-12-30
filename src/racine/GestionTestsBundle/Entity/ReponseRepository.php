@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class ReponseRepository extends EntityRepository
 {
+    public function selectReponseById($id)
+    {
+        $q = $this->getEntityManager()->createQuery('Select r.id,r.description,r.isCorrect  from    racineGestionTestsBundle:Reponse r
+                                                                                          where  r.question = ?1')->setParameter(1, $id);
+        return $q->getResult();
+    }
 }

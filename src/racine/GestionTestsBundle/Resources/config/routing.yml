@@ -5,4 +5,65 @@ racine_gestion_tests_homepage:
 _get_creneau:
     pattern:  /Candidat/inscription/creneau
     defaults: { _controller: racineGestionTestsBundle:Creneau:getCreneau }
+#Administration des tests
+_listing_tests :
+    pattern:  /Admin/Tests/
+    defaults: { _controller: racineGestionTestsBundle:Test:Index }
 
+Admin_Ajout_Test :
+    pattern:  /Admin/Tests/ajouter
+    defaults: { _controller: racineGestionTestsBundle:Test:add }
+  
+Admin_Modifier_Test :
+    pattern:  /Admin/Tests/modifier
+    defaults: { _controller: racineGestionTestsBundle:Test:edit }
+
+Admin_delete_Test :
+    pattern:  /Admin/Tests/supprimer
+    defaults: { _controller: racineGestionTestsBundle:Test:delete }
+
+Admin_publish_Test :
+    pattern:  /Admin/Tests/publier
+    defaults: { _controller: racineGestionTestsBundle:Test:publish }
+
+#Administration des themes
+_listing_themes :
+     pattern:  /Admin/Themes/
+     defaults: { _controller: racineGestionTestsBundle:Theme:Index }
+
+Admin_Ajout_Theme :
+    pattern:  /Admin/Themes/ajouter
+    defaults: { _controller: racineGestionTestsBundle:Theme:add }
+  
+Admin_Modifier_Theme :
+    pattern:  /Admin/Themes/modifier
+    defaults: { _controller: racineGestionTestsBundle:Theme:edit }
+
+Admin_delete_Theme :
+    pattern:  /Admin/Themes/supprimer
+    defaults: { _controller: racineGestionTestsBundle:Theme:delete }
+
+#Administration des questions:
+
+_listing_questions :
+    pattern:  /Admin/Questions/
+    defaults: { _controller: racineGestionTestsBundle:Question:Index }
+
+_get_themes :
+    pattern:  /Admin/Questions/themes
+    defaults: { _controller: racineGestionTestsBundle:Question:getTheme }
+    
+Admin_Ajout_Question :
+    pattern:  /Admin/Questions/ajouter
+    defaults: { _controller: racineGestionTestsBundle:Question:add }
+
+Admin_liste_Reponses :
+    pattern: /Admin/Question/reponses/
+    defaults: { _controller: racineGestionTestsBundle:Question:getReponseById}
+
+#Candidat passe le test
+
+Candidat_do_test :
+    pattern: /Candidat/passerTest/
+    defaults: { _controller: racineGestionTestsBundle:Test:getTest}
+    

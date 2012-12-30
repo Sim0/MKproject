@@ -2,198 +2,297 @@
 
 namespace racine\GestionTestsBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use racine\GestionTestsBundle\Entity\Reponse;
 use racine\GestionTestsBundle\Entity\Question;
-use racine\GestionTestsBundle\Form\QuestionType;
+use racine\GestionTestsBundle\Entity\Theme;
+use racine\GestionUtilisateurBundle\Entity\Utilisateur;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Question controller.
- *
- * @Route("/Question")
- */
+
 class QuestionController extends Controller
 {
-    /**
-     * Lists all Question entities.
-     *
-     * @Route("/", name="Question")
-     * @Template()
-     */
-    public function indexAction()
+  public function IndexAction(request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+       
+   if ($request->isXmlHttpRequest()) 
+       {
 
-        $entities = $em->getRepository('racineGestionTestsBundle:Question')->findAll();
+            $rp = $this->getDoctrine()->getRepository('racineGestionTestsBundle:Question');
 
-        return array(
-            'entities' => $entities,
-        );
-    }
+            $questions = $rp->selectQuestions();
 
-    /**
-     * Finds and displays a Question entity.
-     *
-     * @Route("/{id}/show", name="Question_show")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('racineGestionTestsBundle:Question')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Question entity.');
-        }
+            $secho = "1";
+            $iTotalRecords = \count($questions);
+            $iTotalDisplayRecords = $iTotalRecords;
 
-        $deleteForm = $this->createDeleteForm($id);
+            $js = "{\"secho\": ";
+            $js .= $secho . ",\n";
+            $js .= "\"iTotalRecords\": \"$iTotalRecords\",\n";
+            $js .= "\"iTotalDisplayRecords\": \"";
+            $js .= $iTotalDisplayRecords . "\",\n";
+            $js .= "\"aaData\": [\n";
+            // $jsar = array();
+            foreach ($questions as $row) {
+                $js.='[';
+                foreach ($row as $i => $attributes) {
+                   
+                    $js.='"' . $attributes . '",';
+                }
+                
 
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to create a new Question entity.
-     *
-     * @Route("/new", name="Question_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Question();
-        $form   = $this->createForm(new QuestionType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a new Question entity.
-     *
-     * @Route("/create", name="Question_create")
-     * @Method("POST")
-     * @Template("racineGestionTestsBundle:Question:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity  = new Question();
-        $form = $this->createForm(new QuestionType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('Question_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to edit an existing Question entity.
-     *
-     * @Route("/{id}/edit", name="Question_edit")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('racineGestionTestsBundle:Question')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Question entity.');
-        }
-
-        $editForm = $this->createForm(new QuestionType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Edits an existing Question entity.
-     *
-     * @Route("/{id}/update", name="Question_update")
-     * @Method("POST")
-     * @Template("racineGestionTestsBundle:Question:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('racineGestionTestsBundle:Question')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Question entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new QuestionType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('Question_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Question entity.
-     *
-     * @Route("/{id}/delete", name="Question_delete")
-     * @Method("POST")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('racineGestionTestsBundle:Question')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Question entity.');
+                $jslen = \strlen($js);
+                $js[$jslen - 1] = ']';
+                $js.=',';
             }
 
-            $em->remove($entity);
-            $em->flush();
+
+            $jslen = \strlen($js);
+            $js[$jslen - 1] = "]";
+
+            $js .="}";
+
+
+            return new response($js);
         }
 
-        return $this->redirect($this->generateUrl('Question'));
-    }
+        return $this->render('racineGestionTestsBundle:Question:GestionQuestions.html.twig');
+  }
+  
+   public function getThemeAction(request $request){
+       $resp = new Response();
+       if ($request->isXmlHttpRequest()) {
 
-    private function createDeleteForm($id)
+            if($request->get('action') == "getThemes")
+            {
+             $rp = $this->getDoctrine()->getRepository('racineGestionTestsBundle:Theme');
+
+                 $themes = $rp->selectThemes();
+
+                 
+                 $resp->setContent(\json_encode($themes)) ;
+
+
+            }
+       
+   }
+           return $resp;
+   }
+   public function AddAction(request $request)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
+        if ($request->isXmlHttpRequest()) {
+            
+            $question = new Question();
+            $em = $this->getDoctrine()->getManager();
+            
+            $user = $this->getUser();
+            $question->setUtilisateur($user);
+            
+            $question->setDescription($request->get('description'));
+            $theme = $em->getRepository('racineGestionTestsBundle:Theme')->find($request->get('theme_id'));
+            
+             if (!$theme) {
+                 
+                    throw $this->createNotFoundException('Theme introuvable !');
+                    
+                }
+            
+            
+            $question->setTheme($theme);
+            
+            $reponses = $request->get('reponses');
+            $etats = $request->get('etat');
+            
+            
+            
+            
+            foreach ($reponses as $i => $val) {
+                $rep = new Reponse();
+                $description = $reponses[$i];
+                
+                $rep->setDescription($description);
+                
+                
+                $etat = $etats[$i];
+                if($etat == "true")
+                {
+                 $rep->setIsCorrect(true);
+                }
+                else if( $etat =="false")
+                {
+                  $rep->setIsCorrect(false);
+                }
+                $rep->setQuestion($question);
+              
+               $em->persist($rep);   
+               $question->addReponse($rep);
+                
+            }
+            
+            
+           
+            $em->persist($question);
+            $em->flush();
+            
+             //récupérer l'id du test récemment ajouté
+            $idQuestion="";
+            $idQuestion = $question->getId();
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idQuestion,"addedBy"=>$user->setUsername());
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+       
+        return $resp;
+        
+        
+    }
+    
+    public function getReponseByIdAction(request $request)
+    {
+        $rep = new Response();
+        $id= $this->getRequest()->get('id');
+        
+        if ($request->isXmlHttpRequest()) 
+            {
+               $rp = $this->getDoctrine()->getRepository('racineGestionTestsBundle:Reponse');
+               $reponses = $rp->selectReponseById($id);
+               
+               $secho = "1";
+               $iTotalRecords = \count($reponses);
+               $iTotalDisplayRecords = $iTotalRecords;
+
+                $js = "{\"secho\": ";
+                $js .= $secho . ",\n";
+                $js .= "\"iTotalRecords\": \"$iTotalRecords\",\n";
+                $js .= "\"iTotalDisplayRecords\": \"";
+                $js .= $iTotalDisplayRecords . "\",\n";
+                $js .= "\"aaData\": [\n";
+           
+                
+            foreach ($reponses as $row) {
+                $js.='[';
+                foreach ($row as $i => $attributes) {
+                   
+                     if($i == "isCorrect")
+                    {
+                        if ($attributes =="")
+                        {
+                            $attributes = "Fausse";
+                           
+                        }
+                        elseif ($attributes =="1")
+                        {
+                            $attributes = "Juste";
+                        }
+                    }
+                    $js.='"' . $attributes . '",';
+                }
+                
+
+                $jslen = \strlen($js);
+                $js[$jslen - 1] = ']';
+                $js.=',';
+            }
+
+
+            $jslen = \strlen($js);
+            $js[$jslen - 1] = "]";
+
+            $js .="}";
+
+
+            return new response($js);
+               
+               
+            }
+        return rep;
+    }
+    
+     public function EditAction(request $request)
+      {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
+
+                $theme = $em->getRepository('racineGestionTestsBundle:Theme')->find($id);
+
+                if (!$theme) {
+                    throw $this->createNotFoundException('Theme introuvable !');
+                    
+                }
+            
+            
+            $theme->setTitle($request->get('nom')); 
+            $theme->setDescription($request->get('description'));
+           
+                
+         
+            $em->persist($theme);
+            $em->flush();
+            
+            
+            $idTheme = $theme->getId(); 
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idTheme);
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        
+       
+        return $resp;
+        
+        
+    }
+    
+    public function DeleteAction(request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
+
+                $theme = $em->getRepository('racineGestionTestsBundle:Theme')->find($id);
+
+                if (!$theme) {
+                    throw $this->createNotFoundException('Theme introuvable !');
+                }
+                
+              $em->remove($theme);
+              $em->flush();
+              
+        $content = array("status"=>"200");
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        return $resp;
+              
+            
+        }
+        
+        
+        
     }
 }

@@ -52,7 +52,7 @@ class Test
     /**
      * @var integer $nbr_questions
      *
-     * @ORM\Column(name="Nbr_questions", type="integer")
+     * @ORM\Column(name="nbr_questions", type="integer")
      */
     private $nbr_questions;
 
@@ -64,18 +64,27 @@ class Test
     private $duree_max_question;
 
     /**
-     * @var string $cescription
+     * @var string $description
      *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
+    
+    /**
+     * @var string $isPublished
+     *
+     * @ORM\Column(name="isPublished", type="boolean")
+     */
+    private $isPublished;
+    
 
     
     public function __toString() 
     {
         return $this->getNom();
     }
-
+   
+    
     /**
      * Get id
      *
@@ -262,6 +271,29 @@ class Test
     public function getUtilisateur()
     {
         return $this->utilisateur;
+    }
+    
+    /**
+     * Set IsPublished
+     *
+     * @param boolean $state
+     * @return Test
+     */
+    public function setIsPublished($state)
+    {
+        $this->isPublished = $state;
+    
+        return $this;
+    }
+
+    /**
+     * Get IsPublished
+     *
+     * @return boolean
+     */
+    public function getIsPublished()
+    {
+        return $this->isPublished;
     }
     
 }

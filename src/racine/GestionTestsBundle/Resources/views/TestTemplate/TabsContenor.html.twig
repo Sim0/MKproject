@@ -22,7 +22,7 @@
   pas de role
   
    {% endif %}<input type="submit" class="common-button" value="gestiontest.com" /></h4>
-         <h4> </a> . <a href="{{path('Candidat_do_test')}}">{% if is_granted('ROLE_CANDIDAT') %}Passer le test{%endif%}</a> . <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('Admin_logout') }}{% elseif is_granted('ROLE_CANDIDAT') %} {{ path('Candidat_logout') }} {% endif%}">Logout<img src="{{ asset('bundles/racinegestionutilisateur/images/icons/login.jpg')}}" alt="login" /></a></h4>
+         <h4> </a> . <a href="#">Compte</a> . <a href="{% if is_granted('ROLE_ADMIN') %}{{ path('Admin_logout') }}{% elseif is_granted('ROLE_CANDIDAT') %} {{ path('Candidat_logout') }} {% endif%}">Logout<img src="{{ asset('bundles/racinegestionutilisateur/images/icons/login.jpg')}}" alt="login" /></a></h4>
          </form>      
        </div>
         

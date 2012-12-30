@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class ThemeRepository extends EntityRepository
 {
+     public function selectThemes()
+    {
+       $q = $this->getEntityManager()->createQuery('Select t.id, t.title, t.description  from racineGestionTestsBundle:Theme t' );
+       return $q->getResult();
+       
+    }
 }

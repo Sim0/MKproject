@@ -2,198 +2,312 @@
 
 namespace racine\GestionTestsBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use racine\GestionTestsBundle\Entity\Test;
-use racine\GestionTestsBundle\Form\TestType;
 
-/**
- * Test controller.
- *
- * @Route("/Test")
- */
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use racine\GestionTestsBundle\Entity\Test;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+
 class TestController extends Controller
 {
-    /**
-     * Lists all Test entities.
-     *
-     * @Route("/", name="Test")
-     * @Template()
-     */
-    public function indexAction()
+    
+    public function IndexAction(request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+       
+   if ($request->isXmlHttpRequest()) 
+       {
 
-        $entities = $em->getRepository('racineGestionTestsBundle:Test')->findAll();
+            $rp = $this->getDoctrine()->getRepository('racineGestionTestsBundle:Test');
 
-        return array(
-            'entities' => $entities,
-        );
-    }
+            $tests = $rp->selectTests();
 
-    /**
-     * Finds and displays a Test entity.
-     *
-     * @Route("/{id}/show", name="Test_show")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Test entity.');
-        }
+            $secho = "1";
+            $iTotalRecords = \count($tests);
+            $iTotalDisplayRecords = $iTotalRecords;
 
-        $deleteForm = $this->createDeleteForm($id);
+            $js = "{\"secho\": ";
+            $js .= $secho . ",\n";
+            $js .= "\"iTotalRecords\": \"$iTotalRecords\",\n";
+            $js .= "\"iTotalDisplayRecords\": \"";
+            $js .= $iTotalDisplayRecords . "\",\n";
+            $js .= "\"aaData\": [\n";
+            // $jsar = array();
+            foreach ($tests as $row) {
+                $js.='[';
+                foreach ($row as $i => $attributes) {
+                    if($i == "isPublished")
+                    {
+                        if ($attributes =="")
+                        {
+                            $attributes = "Non publié";
+                           
+                        }
+                        elseif ($attributes =="1")
+                        {
+                            $attributes = "Publié";
+                        }
+                    }
+                    $js.='"' . $attributes . '",';
+                }
+                
 
-        return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to create a new Test entity.
-     *
-     * @Route("/new", name="Test_new")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $entity = new Test();
-        $form   = $this->createForm(new TestType(), $entity);
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a new Test entity.
-     *
-     * @Route("/GT/create", name="Test_create")
-     * @Method("POST")
-     * @Template("racineGestionTestsBundle:Test:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity  = new Test();
-        $form = $this->createForm(new TestType(), $entity);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('Test_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
-        );
-    }
-
-    /**
-     * Displays a form to edit an existing Test entity.
-     *
-     * @Route("/{id}/edit", name="Test_edit")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Test entity.');
-        }
-
-        $editForm = $this->createForm(new TestType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Edits an existing Test entity.
-     *
-     * @Route("/{id}/update", name="Test_update")
-     * @Method("POST")
-     * @Template("racineGestionTestsBundle:Test:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Test entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createForm(new TestType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('Test_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Test entity.
-     *
-     * @Route("/{id}/delete", name="Test_delete")
-     * @Method("POST")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Test entity.');
+                $jslen = \strlen($js);
+                $js[$jslen - 1] = ']';
+                $js.=',';
             }
 
-            $em->remove($entity);
-            $em->flush();
+
+            $jslen = \strlen($js);
+            $js[$jslen - 1] = "]";
+
+            $js .="}";
+
+
+            return new response($js);
         }
 
-        return $this->redirect($this->generateUrl('Test'));
-    }
-
-    private function createDeleteForm($id)
+        return $this->render('racineGestionTestsBundle:Test:GestionTests.html.twig');
+  }
+  
+   public function AddAction(request $request)
     {
-        return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;
+        if ($request->isXmlHttpRequest()) {
+            
+            $test = new Test();
+          
+            $test->setNom($request->get('nom',''));
+            $test->setDuree($request->get('duree'));
+            $test->setDureeMaxQuestion($request->get('dureeMaxQuestion'));
+            $test->setIsPublished(false);
+            $test->setNbrQuestions($request->get('nbrQuestion'));
+            $test->setDescription($request->get('description'));
+            $user  = $this->getUser();
+            $test->setUtilisateur($user);
+            
+            
+            
+            $em = $this->getDoctrine()->getManager();
+         
+            $em->persist($test);
+            $em->flush();
+            
+             //récupérer l'id du test récemment ajouté
+            $idTest = $test->getId();
+            
+            
+           
+            
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idTest);
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+       
+        return $resp;
+        
+        
     }
+    
+     public function EditAction(request $request)
+      {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
+
+                $test = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
+
+                if (!$test) {
+                    throw $this->createNotFoundException('Unable to find Question entity.');
+                }
+            
+           
+            $test->setDuree($request->get('duree'));
+            $test->setDureeMaxQuestion($request->get('dureeMaxQuestion'));
+            $test->setNbrQuestions($request->get('nbrQuestion'));
+            $test->setDescription($request->get('description'));
+            $user  = $this->getUser();
+            $test->setUtilisateur($user);
+                
+         
+            $em->persist($test);
+            $em->flush();
+            
+            
+            $idTest = $test->getId(); 
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idTest);
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        
+       
+        return $resp;
+        
+        
+    }
+    
+    public function DeleteAction(request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              $em = $this->getDoctrine()->getManager();
+
+                $test = $em->getRepository('racineGestionTestsBundle:Test')->find($id);
+
+                if (!$test) {
+                    throw $this->createNotFoundException('Test inexistant !');
+                }
+                
+              $em->remove($test);
+              $em->flush();
+              
+        $content = array("status"=>"200");
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        return $resp;
+              
+            
+        }
+        
+        
+        
+    }
+    
+    public function PublishAction(request $request)
+      {
+        if ($request->isXmlHttpRequest()) {
+            
+              $id = $request->get('id');
+              
+              
+              $em = $this->getDoctrine()->getManager();
+              $rp = $em->getRepository('racineGestionTestsBundle:Test');
+               
+              $testPublished = $rp->selectPublished($id);
+               
+              $test = $em->getRepository('racineGestionTestsBundle:Test')->find($testPublished['id']);
+
+                if (!$test) {
+                    throw $this->createNotFoundException('Test inexistant !');
+                }
+           
+              
+            $test->setIsPublished(false);
+           
+            /*
+            $test->setDuree($request->get('duree'));
+            $test->setDureeMaxQuestion($request->get('dureeMaxQuestion'));
+            $test->setNbrQuestions($request->get('nbrQuestion'));
+            $test->setDescription($request->get('description'));
+            $user  = $this->getUser();
+            $test->setUtilisateur($user);
+            */
+         
+            $em->persist($test);
+            $em->flush();
+            
+            
+            $idTest = $test->getId(); 
+            
+        }
+        
+        $content = array("status"=>"200","info"=>$idTest);
+        $content = \json_encode($content);
+        
+        $resp = new Response();
+        $resp->setStatusCode(200);
+        $resp->setContent($content);
+       
+            
+        
+       
+        return $resp;
+        
+        
+    }
+    
+    public function getTestAction(request $request)
+    {
+       if ($request->isXmlHttpRequest()) { 
+        
+                                             $js  = '{  "title":"Capitales",
+                                                        "description":"Questions d\'ordre générale sur les capitales du mondes",
+                                                        "questions":[
+                                                           {
+                                                              "type":"Question",
+                                                              "text":"Quelle est la capitale du maroc ?",
+                                                              "answers":[
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"Rabat",
+                                                                    "correct":"true"
+                                                                 },
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"Dublin",
+                                                                    "correct":"false"
+                                                                 }
+                                                              ]
+                                                            },
+                                                            {
+                                                              "type":"Question",
+                                                              "text":"Quelle est la capitale de la tunisie?",
+                                                              "answers":[
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"Tunis",
+                                                                    "correct":"true"
+                                                                 },
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"Alger",
+                                                                    "correct":"false"
+                                                                 }
+                                                              ]
+                                                            },
+                                                            {
+                                                              "type":"Question",
+                                                              "text":"Quelle est la capitale des Etats unis ?",
+                                                              "answers":[
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"Washignton.",
+                                                                    "correct":"true"
+                                                                 },
+                                                                 {
+                                                                    "type":"Answer",
+                                                                    "text":"New York",
+                                                                    "correct":"false"
+                                                                 }
+                                                              ]
+                                                            }]}';
+           
+           
+           return new response($js);
+                                          } 
+          return $this->render('racineGestionTestsBundle:Test:PasserTest.html.twig');
+    }
+     
+    
 }

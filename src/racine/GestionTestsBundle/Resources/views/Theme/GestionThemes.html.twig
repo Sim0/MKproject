@@ -1,0 +1,393 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Lister Theme</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+<div id="content">
+        <div class="tab_content" id="Themes"  >
+   <!--ici le contenu du tab tests--> 
+        <div class="element-box"> 
+        <h1>Themes</h1>
+                     <p>Cette table affiche les paramétrages des themes </p>
+                     <br />     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+         <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTthemes">
+	<thead><tr>
+			<th>Id_theme</th>
+			<th>Title</th>
+                        <th>Description</th>
+		</tr>
+	</thead>
+	
+		</table>
+                
+                <div id="addBox" class="modal-box"> 
+                 
+                 <div id="opBox">			
+                     <h1>Paramétrez le théme :</h1>
+                               
+                               <div class="form-row">
+                               <samp>Nom Theme :</samp>
+                               <input type="text" class="input-text medium a" name="addNom" /> 
+                               </div></br>
+                               
+                               <div class="form-row">
+                               <samp>Description :</samp>
+                               <textarea class="input-text large" name="addDescription" rows="4"></textarea>
+                               </div></br>
+                               
+                               
+                               <div class="form-row">
+                                  <input type="button" id="addTheme" class="button green-button"   value="Valider" /> 
+                               </div></br>
+                 </div>
+               </div>
+                
+                 <div id="modBox" class="wizard-box modal-box"> 
+                   
+                     <div id="opBox">			
+                     <h1>Paramétrez le théme :</h1>
+                               
+                               <div class="form-row">
+                               <samp>Nom Theme :</samp>
+                               <input type="text" class="input-text medium a" name="modNom" /> 
+                               </div></br>
+                               
+                               <div class="form-row">
+                               <samp>Description :</samp>
+                               <textarea class="input-text large" name="modDescription" rows="4"></textarea>
+                               </div></br>
+                               
+                               
+                               <div class="form-row">
+                                  <input type="button" id="modTheme" class="button green-button"   value="Valider" /> 
+                               </div></br>
+                  </div>
+                
+                </div>
+                        
+                
+                
+                </div>
+		
+<script type="text/javascript">
+			$(document).ready(function(){
+				// "sDom": '<"H"Tfr>l<"clear">t<"F"ip>',
+				//"sDom": 'T<"clear">lfrtip',
+				
+			   var myTable = $('#DTthemes').dataTable({
+			    	          
+			    	          "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+			    	          "bProcessing": true,
+							  "sAjaxSource": "{{ path('_listing_themes') }}",
+							  "bJQueryUI": true,
+							  "sPaginationType": "full_numbers",
+							  "oTableTools": {
+        									    "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
+        									    "aButtons": [
+                                                                                                    "copy","print",
+                                                                                                    {
+                                                                                                            "sExtends":    "collection",
+                                                                                                            "sButtonText": "Enregistrer sous",
+                                                                                                            "aButtons":    [ "csv","xls", "pdf" ]
+                                                                                                    }
+												]
+       										 }		
+								         });
+                                                                
+                                                                
+				 
+				  $('#DTthemes tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+                             
+        						 
+					
+				
+                    $('#ajouterTH').live('click',
+                            function(e){
+                               
+                              
+                              var themesModal = $("#addBox").modal();
+                              
+                                  
+                                                                      
+                                      $('#addTheme').live('click',function(){ 
+                                            var nom = $('input[name="addNom"]').val();
+                                            var description = $('textarea[name="addDescription"]').val();
+                                          
+                                                 if(nom != "" && description != "")
+                                                           {
+                                                            themesModal.close();
+                                                            $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "{{ path('Admin_Ajout_Theme') }}",
+                                                                    data: {
+                                                                        nom: nom,
+                                                                        description : description
+                                                                        
+                                                                        },
+                                                                        dataType : 'json',
+                                                                        success: function (data,status) {
+                                                                            if(data.status == "200")
+                                                                                {
+                                                                                     $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau test a été correctement ajouté à la base de donnée.</div></div>');
+
+
+                                                                            myTable.fnAddData([
+                                                                                data.info,
+                                                                                nom,
+                                                                                description
+                                                                                              ]);
+                                                                                }
+                                                                                else
+                                                                                {
+
+                                                                                        $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout du théme veuillez ressayer. </div></div>')
+
+                                                                                }
+                                                                         return false;
+                                                                                                      },
+                                                                       error: function (jqHx,status) {
+                                                                
+                                                                         return false;
+                                                                                                       }
+									   
+							    		
+							    
+                                                            });
+                                                            }
+                                                            else
+                                                                {
+                                                                    $.msgbox("Veuilez saisir toute les informations");
+                                                                }
+							    	
+							    	
+							    
+							  
+                               
+                                  
+                                                                    });
+				e.preventDefault();
+                                                    
+				
+			});
+                        
+                        // Fin ajout Test
+                        
+                        $('#modifierTH').live('click',
+                            function(e){
+                            
+                            selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{
+                                                            $('input[name="modNom"]').val($('#DTthemes tr.row_selected td:eq(1)').text());
+                                                            $('textarea[name="modDescription"]').val($('#DTthemes tr.row_selected td:eq(2)').text());
+                                                            
+                               
+                              
+                              var themesModal = $("#modBox").modal();
+                              
+                                  
+                                                                      
+                                      $('#modTheme').live('click',function(){ 
+                                            // récupération de l'id du theme qu'on souhaite modifier.
+                                            var id = $('#DTthemes tr.row_selected td:first').text();
+                                            // récupération des nouvelles valeurs.
+                                            var nom = $('input[name="modNom"]').val();
+                                            var description = $('textarea[name="modDescription"]').val();
+                                            
+                                            
+                                                 if(nom != "" &&  description != "")
+                                                           {
+                                                            themesModal.close();
+                                                            $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "{{ path('Admin_Modifier_Theme') }}",
+                                                                    data: {
+                                                                        id:id,
+                                                                        nom:nom,
+                                                                        description:description
+                                                                        
+                                                                        },
+                                                                        dataType : 'json',
+                                                                        success: function (data,status) {
+                                                                            if(data.status == "200")
+                                                                                {
+                                                                                     $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau theme a été correctement modifié dans la base de donnée.</div></div>');
+                                                                                      
+                                                                                      
+                                                                                     // insérer les nouvelles données dans le Datatable  
+                                                                                        $('#DTthemes tr.row_selected td:eq(1)').text(nom);
+                                                                                        $('#DTthemes tr.row_selected td:eq(2)').text(description);
+                                                               
+
+                                                                           
+                                                                                }
+                                                                                else 
+                                                                                {
+
+                                                                                        $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de la modification du theme veuillez ressayer : '+data.status+' : '+data.error+' </div></div>');
+
+                                                                                }
+                                                                         return false;
+                                                                                                      },
+                                                                       error: function (jqHx,status) {
+                                                                           
+                                                                           
+                                                                                       $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de la modification du theme veuillez ressayer  </div></div>');
+                                                                         return false;
+                                                                                                       }
+									   
+							    		
+							    
+                                                            });
+                                                            }
+                                                            else
+                                                                {
+                                                                    $.msgbox("Veuilez saisir toute les informations");
+                                                                }
+							    	
+							    	
+							    
+							  
+                               
+                                  
+                                                                    }); }
+                                                                    else
+                                                                    {
+                                                                        $.msgbox("Veuilez sélectionnez un theme");
+                                                                    }
+                                                                    
+				e.preventDefault();
+                                                    
+				
+			});
+			
+			
+			$('#supprimerTH').click(function(){
+							selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{		
+						            $.msgbox("êtes-vous sûr de vouloir supprimer ce theme?", {
+														type: "confirm",
+													    
+														buttons : [
+													        {type: "submit", value: "Oui"},{type: "submit", value: "Non"}
+															]},
+													
+													function(result) {
+														if(result == "Oui")
+														{
+															id = $('#DTthemes tr.row_selected td:first').text();
+															$.ajax({
+																url:"{{ path('Admin_delete_Theme') }}",
+																dataType:'json',
+																type:'post',
+																data : {
+																	id:id
+                                                                                                                                        },
+																success:function(data){
+																	if(data.status == "200")
+																	{
+																		myTable.fnDeleteRow(selectedRow[0]);
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le theme est définitivement supprimé de la base de donnée.</div></div>');
+																		
+																	}
+																	else if(data.status == "error")
+																	{
+																		
+										         					   	        $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong>'+ data.info +'</div></div>');
+																	
+																	}
+																	
+																},
+																error:function(){
+																	
+																}
+																
+																
+																
+															});
+															
+															
+															
+															
+														}
+														else if(result =="Non" )
+														{
+															
+															//$.msgbox("Votre demande de suppresion est annulée !",{type:info});
+														}
+														
+														
+														
+													});
+													
+										}
+										else
+										{
+											$.msgbox("Aucun theme n'est sélectionné pour la suppresion !");
+										}
+										
+											
+											
+											
+											
+										});
+                                        //Fin Suppression Theme
+                              
+                              
+									
+                            });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')%}
+	    <a id="ajouterTH" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
+            <a id="modifierTH" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
+            <a id="supprimerTH" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+            <a id="afficherQuestionTH" class="button" href="#"><i class="icon-share"></i>Afficher Questions</a>
+            
+            
+		{% endif %}
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

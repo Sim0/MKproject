@@ -6,8 +6,9 @@
 
     {% include 'racineGestionUtilisateurBundle:Templates:TabsContenor.html.twig' %}
 <div class="main">
+    {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN') %}
     {% include 'racineGestionUtilisateurBundle:Templates:rightmenu.html.twig' %}
-        
+     {% endif %}   
 
 {% endblock %}
 

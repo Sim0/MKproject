@@ -25,7 +25,7 @@
                     </a>
  
 			         <ul style="display: block;">
-						<li><a href="#">Lister les utilisteurs</a></li>
+						<li><a href="{{path('Admin_liste_Utilisateur')}}">Lister les utilisteurs</a></li>
 						<li><a href="#">valider un utilisateur</a></li> <!-- Add class "current" to sub menu items also -->
 						
 					 </ul>
@@ -38,20 +38,20 @@
 				  </a>
                   
 	          <ul style="display: none;">
-						<li><a href="#">Lister les candidats</a></li>
+						<li><a href="{{path('Admin_liste_Candidats')}}">Lister les candidats</a></li>
 						<li><a href="#">Candidat en attente</a></li>
 					</ul>
 				</li>
 				
 				<li>
                   <img src="{{ asset('bundles/racinegestionutilisateur/images/menu-arrow.png')}}" alt="Arrow" />
-				  <a href="#" class="nav-top-item current">
+				  <a href="{{ path('_listing_tests') }}" class="nav-top-item current">
 						Gestion tests
 				  </a>
 				  <ul style="display: none;">
-					        <li><a href="#">Configurer test</a></li>
-						<li><a href="#">Ajouter Question<input type="button" class="common-button" value="View All" /></a></li>
-						<li><a href="#">Créneau</a></li>
+					        <li><a href="{{ path('_listing_tests') }}">Configurer test</a></li>
+						<li><a href="{{ path('_listing_questions') }}">Ajouter Question<input type="button" class="common-button" value="View All" /></a></li>
+						<li><a href="{{ path('_listing_themes') }}">Théme</a></li>
 						
 					</ul>
 				</li>

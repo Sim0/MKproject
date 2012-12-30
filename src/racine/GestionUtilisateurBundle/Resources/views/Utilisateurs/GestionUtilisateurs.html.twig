@@ -349,7 +349,9 @@
                                                                                                                 }
                                                                                                                 })**/
                                                                                                                 return validated //if this variable returns false, user is prevented from going on to next form page
-                                                                       }});
+                                                                    e.prevetDefault();    }
+                                                                   
+                                                              });
                                                                       
                                       $('#addUser').live('click',function(){ 
                                                             usersModal.close();

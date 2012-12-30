@@ -1,5 +1,9 @@
 {# header template #}
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 {% block head %} 
 <head>
         {% stylesheets filter='cssrewrite' 'bundles/racinegestionutilisateur/css/*'
@@ -21,14 +25,18 @@
                                                             'bundles/racinegestionutilisateur/js/TableTools.min.js'
                                                             'bundles/racinegestionutilisateur/js/ZeroClipboard.js'
                                                             'bundles/racinegestionutilisateur/js/formwizard.js'
-
+                                                            
+    
                                                             
                                                                  
                                                             
                                                               %}
-            <script src="{{ asset_url }}" type="text/javascript"></script>
+            <script src="{{ asset_url }}" type="text/javascript">
+     
+                                         
+           
+          </script>
      {% endjavascripts %}
-    
     
       </head>
 {% endblock %}

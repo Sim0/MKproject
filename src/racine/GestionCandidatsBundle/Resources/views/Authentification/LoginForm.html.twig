@@ -13,7 +13,7 @@
             
 				<div id="login_wrapper" class="form_wrapper">
                     
-					<form class="login active" action="{{ path("_security_check_Candidat") }}"  method="post" >
+					<form class="login active" action="{{ path("_security_check_Candidat") }}"  method="post" id="login" >
 						 <h3>Login</h3>
 						     
                                                     <div>
@@ -22,14 +22,14 @@
                                                      <input type="text"  class="input-text" name="_codesession" value="{{ last_username }}" />
 						     
 						    </div>
-						<div>
+                                                 <div style="display:none;">
                                                      <label for="password">Resaisissez code session :  </label>
-                                                     <input type="text"  name="_codesessionpass" class="input-text" />
+                                                     <input type="text" display="hidden"  name="_codesessionpass" class="input-text" />
 					             
 						</div>
 						<div class="bottom">
 							                           
-							<input type="submit" value="se connecter" class="button"  />
+							<input type="submit" value="se connecter" name="seConnecter" class="button"  />
                             <a href="{{path('_Candidat_inscription')}}"  >Vous n'êtes pas encore inscrit ?</a>
 							<div class="clear"></div>
 						</div>
@@ -43,13 +43,20 @@
                  </div>
 
 
-
+     <script type="text/javascript">
+			$(document).ready(function(){
+                            $('#login').submit(function(){
+                            
+                                                   $('input[name="_codesessionpass"]').val($('input[name="_codesession"]').val());
+                        });
+                        
+                    
+                });
+     </script>
 {% endblock %}
 
 
            
-				
-			
 		
 
 
@@ -59,7 +66,7 @@
 {% block content %}
     <h1>Login</h1>
     
-
+          
    
 
    

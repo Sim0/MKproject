@@ -1,0 +1,80 @@
+{% extends "racineGestionTestsBundle:TestTemplate:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Passer le test</title>
+    
+{% endblock %}
+
+ 
+ 
+{% block body %}
+ <div id="takeQuizContainer" class="quiz-1">
+
+    <h2 class="light marginTopN20" id="quizTitle"></h2>
+    
+    <div class="plainLine"></div>
+      
+	
+    
+    <script type="text/javascript" >
+             
+            
+      /*     var questions;
+     $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "{{ path('Candidat_do_test') }}",
+                                                                    data: {
+                                                                       
+                                                                        },
+                                                                        dataType : 'json',
+                                                                        success: function (data,status) {
+                                                                             
+                                                                             $.getScript("{}}");
+                                                                              
+                                                                         return false;
+                                                                                                      },
+                                                                       error: function (jqHx,status) {
+                                                                
+                                                                         return false;
+                                                                                                       }
+									   
+							    		
+							    
+                                                            });  */
+    
+        window.quizData = {"title":"Capitales","description":"Questions d\'ordre générale sur les capitales du mondes","questions":[{"type":"Question","text":"Quelle est la capitale du maroc ?","answers":[{"type":"Answer","text":"Rabat","correct":"true"},{"type":"Answer","text":"Dublin","correct":"false"}]},{"type":"Question","text":"Quelle est la capitale de la tunisie?","answers":[{"type":"Answer","text":"Tunis","correct":"true"},{"type":"Answer","text":"Alger","correct":"false"}]},{"type":"Question","text":"Quelle est la capitale des Etats unis ?","answers":[{"type":"Answer","text":"Washignton.","correct":"true"},{"type":"Answer","text":"New York","correct":"false"}] }]};
+    </script>
+    
+     
+              
+    <noscript><h2 class="noscript">Activez javascript pour pouvoir passer le test.</h2></noscript>
+    
+    
+    <div id="quizDetails">
+        
+        
+        
+	
+    
+    </div>
+
+<div class="clear"></div>
+
+</div>
+
+ 
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+
+                     <script  type="text/javascript">
+                     
+                     
+                 
+             </script>
+                   
+{% endblock %}

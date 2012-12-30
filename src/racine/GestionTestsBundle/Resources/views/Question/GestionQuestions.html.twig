@@ -1,0 +1,439 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Lister Theme</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+<div id="content">
+        <div class="tab_content" id="Questions"  >
+   <!--ici le contenu du tab question--> 
+        <div class="element-box"> 
+        <h1>Questions</h1>
+                     <p>Cette table affiche toutes les questions</p>
+                     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+         <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTquestions">
+	<thead><tr>
+			<th>Id_Question</th>
+			<th>Question</th>
+                        <th>Thème</th>
+                        <th>Ajouté par </th>
+                        
+		</tr>
+	</thead>
+	
+		</table>
+                
+                <div id="addBox" class="wizard-box modal-box"> 
+                   <form id="addarticlesform" method="POST">
+
+                        <fieldset class="sectionwrap">
+                              <legend>Ajouter une Question</legend>
+                             <p><i>Entrez la question et selectionnez le théme de la question</i></p>
+                               <div id="opBox">			
+                               <div class="form-row">
+                               <samp>Description  :</samp>
+                               <input type="text" class="input-text large a" name="addDescription" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Théme:</samp>
+                               <select class="input-text medium" id="selectTheme" title="Sélectionnez un thème"></select>
+                               </div></br>
+                               
+                               </div>
+                        </fieldset>
+                       
+                       <fieldset class="sectionwrap">
+                          <legend>Ajoutez des Réponses</legend>
+                          <p><i>Ajoutez les réponses possibles et cochez les ou la réponse(s) correctes ! (Max 5 réponses | Min 2 réponses ) au moins une réponse juste .</i></p>
+                       <div id="opBox">
+                        <div class="form-row">
+                        <samp>Réponse 1 :(*)</samp>
+                        <input type="text" class="input-text medium" name="addRep1" /> 
+                        <label><input type="checkbox" class="styled"  name="addRep1" /> Correcte</label>
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Réponse 2:(*)</samp>
+                        <input type="text" class="input-text medium " name="addRep2"/>
+                        <label><input type="checkbox" class="styled"  name="addRep2" /> Correcte</label>
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Réponse 3:</samp>
+                        <input type="text" class="input-text medium " name="addRep3" />
+                        <label><input type="checkbox" class="styled" name="addRep3"/> Correcte</label>
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Réponse 4:</samp>
+                        <input type="text" class="input-text medium " name="addRep4" />
+                        <label><input type="checkbox" class="styled" name="addRep4" /> Correcte</label>
+                        </div></br>
+                        <div class="form-row">
+                        <samp>Réponse 5:</samp>
+                        <input type="text" class="input-text medium " name="addRep5" /> 
+                        <label><input type="checkbox" class="styled" name="addRep5" /> Correcte</label>
+                        </div></br>
+                       </div>
+                        </fieldset>
+                       
+                       
+                     <fieldset class="sectionwrap">
+                          <legend>Validation</legend>
+                         <p><i>Vérifier que les informations que vous avez choisi sont correctes.</i></p>
+                        <div class="form-row">
+                         <samp>Description :</samp>
+                           <input type="text" class="input-text large " name="addDescriptionV" disabled /> 
+                           </div></br>
+                         <div id="validationReponse"> 
+                         </div>
+                       <div class="form-row">
+                        
+                        <input type="button" id="addQuestion" class="button green-button" name="addQuestionform"  value="Ajouter" /> 
+                        </div></br>
+                        
+                      </fieldset>  
+                        
+                        </form>
+                
+                
+                </div>
+                
+                 <div id="modBox" class="wizard-box modal-box"> 
+                   
+                     <div id="opBox">			
+                     <h1>Paramétrez le théme :</h1>
+                               
+                               <div class="form-row">
+                               <samp>Nom Theme :</samp>
+                               <input type="text" class="input-text medium  a" name="modNom" /> 
+                               </div></br>
+                               
+                               <div class="form-row">
+                               <samp>Description :</samp>
+                               <textarea class="input-text large" name="modDescription" rows="4"></textarea>
+                               </div></br>
+                               
+                               
+                               <div class="form-row">
+                                  <input type="button" id="modTheme" class="button green-button"   value="Valider" /> 
+                               </div></br>
+                  </div>
+                
+                </div>
+                <div id="displayRep" class="modal-box">
+                    <div id="opBox">
+                    <h1>Réponses :</h1></br>
+                    <div id="opBox">
+                    <div id="teable">
+				<table cellpadding="0" cellspacing="0" border="0" class="display" id="DTreponsesf">
+				  <thead>
+                                     <tr>
+				     <th>ID Réponse</th>
+				     <th>Réponse</th>
+				     <th>Correcte ?</th>
+			             </tr>
+                                  </thead>
+				    <tbody>
+				</table>
+                
+                </div>
+                  </div>      
+                </div> 
+                
+                </div>
+		
+<script type="text/javascript">
+			$(document).ready(function(){
+				// "sDom": '<"H"Tfr>l<"clear">t<"F"ip>',
+				//"sDom": 'T<"clear">lfrtip',
+				
+			   var myTable = $('#DTquestions').dataTable({
+			    	          
+			    	          "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+			    	          "bProcessing": true,
+							  "sAjaxSource": "{{ path('_listing_questions') }}",
+							  "bJQueryUI": true,
+							  "sPaginationType": "full_numbers",
+							  "oTableTools": {
+        									    "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
+        									    "aButtons": [
+                                                                                                    "copy","print",
+                                                                                                    {
+                                                                                                            "sExtends":    "collection",
+                                                                                                            "sButtonText": "Enregistrer sous",
+                                                                                                            "aButtons":    [ "csv","xls", "pdf" ]
+                                                                                                    }
+												]
+       										 }		
+								         });
+                                                                
+                                                                
+				 
+				  $('#DTquestions tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+                             
+        			   /*Déclaration des variables à ce niveau pour qu'elles aient une portée globale*/				 
+					 var questionsModal;
+                                         //vérifier si la réponse est correcte ou non 
+                                         var nbr_rep_juste = 0;
+
+                                         // Tableau contenant la description des reponses et leurs etats 
+                                         var fullReponses = new Array();
+                                         
+                                         //Tableau contenant les reponses à stocker en attachement à la question
+                                         var reponses = new Array();
+                                         //Tableau contenant les etats des réponses à stocker 
+                                         var etat = new Array();
+                                           
+                                         // texte de la question 
+                                         var description;
+                                           
+                                         // id du theme choisi 
+                                         var theme_id;
+                                         // nom theme
+                                         var theme;
+				
+                     $('#ajouterQU').live('click',
+
+ function (e) {
+     //récupération des themes de question pour remplir la liste déroulante
+     $.post("{{path('_get_themes')}}", {
+         'action': "getThemes"
+     },
+
+     function (data) {
+         var sel = $("#selectTheme");
+         sel.empty();
+         for (var i = 0; i < data.length; i++) {
+             sel.append('<option value="' + data[i].id + '">' + data[i].title + '</option>');
+         }
+     }, "json");
+
+
+     questionsModal = $("#addBox").modal();
+
+
+     var myform = new formtowizard({
+         formid: 'addarticlesform',
+         persistsection: false,
+         revealfx: ['slide', 500],
+
+         onpagechangestart: function ($, i, $fieldset) {
+             var validated = true
+             switch (i) {
+                 case 0:
+                     if ($('input[name="addDescription"]').val() == "") validated = false;
+                     else {
+                         description = $('input[name="addDescription"]').val()
+                         $('input[name="addDescriptionV"]').val(description);
+                         console.log(description);
+
+                         theme_id = $('#selectTheme :selected').attr("value");
+                         console.log(theme_id+'id');
+                         theme = $('#selectTheme :selected').text();
+                         console.log(theme)
+
+                     }
+
+                     break;
+                 case 1:
+                     $('#validationReponse').empty();
+                     if ($("input[name='addRep1']").val() == "" || $("input[name='addRep2']").val() == "") validated = false;
+                     else {
+                         $('input[name="addDescriptionV"]').val($('input[name="addDescription"]').val());
+
+
+                         addRep = $('input[name^="addRep"][type="text"]');
+
+                         
+
+                         //parcourir les champs réponses saisies 
+
+                         $('input[name^="addRep"][type="text"]').each(function (i, elem) {
+
+                             if ($(this).val() != "") {
+                                 attr = $(this).attr("name");
+                                 rep = $(this).val();
+                                 $("input[name='" + attr + "V']").val();
+                                 //on compte nbr_rep_juste afin de s'assurer que il y a au moins une réponse juste, au cas ou deux réponses sont renseigné 
+
+                                 j = i + 1; // numéro de la réponse  i commençant de 0
+
+                                 if ($('input[name="' + attr + '"]:checked').length == 0) {
+                                     // Réponse fausse : 
+                                      reponses[i] = rep;
+                                     etat[i] = 'false';
+                                    // fullReponses[['+i+']['description']] = rep  
+                                    // fullReponses[['+i+']['etat']] = 'true';
+                                     $('#validationReponse').append('<div class="form-row"><samp>Réponse' + j + ' :</samp><input type="text" class="input-text medium  input-error" name="' + attr + '" value="' + rep + '" disabled/> </div>');
+                                 } else {
+                                     //Réponse juste
+                                     reponses[i] = rep;
+                                     etat[i] = 'true';
+                                   //  fullReponses[['+i+']['description']] = rep  
+                                    // fullReponses[['+i+']['etat']] = 'true';
+                                     $('#validationReponse').append('<div class="form-row"><samp>Réponse' + j + ' :</samp><input type="text" class="input-text medium  input-success" name="' + attr + '" value="' + rep + '" disabled/> </div>');
+
+                                 }
+                                 
+                                
+
+                                 
+                             }
+                         });
+
+                         
+                         
+
+                     }
+                     break;
+                 case 2:
+
+                     break;
+
+                 default:
+                     validated = false;
+                     break;
+             }
+
+             return validated // tant que validated = false l'utilisateur ne peut passer à l'étape suivante
+         }
+       
+       });
+
+     //fin initialisation form wizard
+
+     $('#addQuestion').live('click', function () {
+
+         questionsModal.close();
+         $.ajax({
+             type: 'POST',
+             url: "{{ path('Admin_Ajout_Question') }}",
+             data: {
+                 description: description,
+                 theme_id: theme_id,
+                 etat:etat,
+                 reponses:reponses
+             },
+             dataType: 'json',
+             success: function (data, status) {
+                 if (data.status == "200") {
+                     $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : La question a été correctement ajouté à la base de donnée.</div></div>');
+
+                     myTable.fnAddData([
+                     data.info,
+                     description,
+                     theme,
+                     data.addedBy
+                     
+                    
+
+
+                     ]);
+                 } else {
+
+                     $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout de la question veuillez ressayer. </div></div>')
+
+                 }
+                 return false;
+             },
+             error: function (jqHx, status) {
+
+                 return false;
+             }
+
+         });
+
+
+
+     });
+ 
+    e.preventDefault();
+
+ });
+                // Fin ajout Test
+                        
+                      
+                      
+          //Début afficher réponse :
+            $('#afficherReponseQU').live('click',function(){
+                                          
+                                          selectedRow = myTable.$('tr.row_selected');
+							
+                                                        reponsessModal = $("#displayRep").modal();
+						
+							if(selectedRow.length !== 0)
+							{	
+                                                           var id = $('#DTquestions tr.row_selected td:first').text();
+                                                           route = "{{path('Admin_liste_Reponses')}}";
+                                                           route += '?id='+id;
+                                                            var TableRoles = $('#DTreponsesf').dataTable({
+			    	                                        "bDestroy": true,
+                                                                        "sDom": '<"H"lfr>t<"F"ip>',
+                                                                        "bProcessing": true,
+                                                                                        "sAjaxSource": route,
+                                                                                        "bJQueryUI": true,
+                                                                                        "sPaginationType": "full_numbers",
+                                                                                        "oTableTools": {
+                                                                                                                  "sRowSelect": "multi",
+                                                                                                       }		
+								});
+                                                                
+                                                        }
+                                                        else
+                                                            {
+                                                                $.msgbox('Sélectionnez une question pour afficher ses réponses');
+                                                                }
+            
+            
+                                                            });
+                      
+                              
+		//Fin afficher réponse							
+                            });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ADMIN')%}
+	    <a id="ajouterQU" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
+            <a id="modifierQU" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
+            <a id="supprimerQU" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+            <a id="afficherReponseQU" class="button" href="#"><i class="icon-share"></i>Afficher Réponses</a>
+            
+            
+		{% endif %}
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class TestRepository extends EntityRepository
 {
+      public function selectTests()
+    {
+       $q = $this->getEntityManager()->createQuery('Select t.id, t.nom, t.duree, t.nbr_questions, t.duree_max_question,t.description,t.isPublished  from racineGestionTestsBundle:Test t' );
+       return $q->getResult();
+       
+    }
+    
+     public function selectPublished()
+    {
+       $q = $this->getEntityManager()->createQuery('Select t.id as id  from racineGestionTestsBundle:Test t where t.isPublished = ?1 ' )->setParameter(1, true);
+       return $q->getResult();
+       
+    }
 }

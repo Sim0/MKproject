@@ -30,6 +30,7 @@ assetic:
     #java: /usr/bin/java
        - racineGestionUtilisateurBundle
        - racineGestionCandidatsBundle
+       - racineGestionTestsBundle
     
     filters:
         cssrewrite: ~

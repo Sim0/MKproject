@@ -20,8 +20,6 @@ class Reponse
    private $question;
     
     
-    
-    
     /**
      * @var integer $id
      *

@@ -1,0 +1,509 @@
+{% extends "racineGestionUtilisateurBundle:Templates:layout.html.twig" %}
+
+{%block head %} parent(){% endblock %}
+{% block header %}
+ {{parent()}}
+ <title>Lister Test</title>
+    
+{% endblock %}
+
+{% block body %}
+ {{parent()}}
+<div id="content">
+        <div class="tab_content" id="Tests"  >
+   <!--ici le contenu du tab tests--> 
+        <div class="element-box"> 
+        <h1>Tests</h1>
+                     <p>Cette table affiche les paramétrages des tests </p>
+                     <br />     
+        </div>
+        
+		<div id="rqStatusFO"></div>
+      
+         <table cellpadding="0" cellspacing="0" border="0" class="display" id="DTtests">
+	<thead><tr>
+			<th>Id_test</th>
+			<th>Nom</th>
+                        <th>Durée</th>
+			<th>Nbr_question</th>
+			<th>Durée_Max_Question</th>
+			<th>Description</th>
+                        <th>Etat</th>
+                 </tr>
+	</thead>
+	
+		</table>
+                
+                <div id="addBox" class="modal-box"> 
+                 
+                 <div id="opBox">			
+                     <h1>Paramétrez le test :</h1>
+                               <div class="form-row">
+                               <samp>Nom Test :</samp>
+                               <input type="text" class="input-text medium a" name="addNom" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Durée :</samp>
+                               <input type="text" class="input-text small a" name="addDuree" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Nombre de question :</samp>
+                               <input type="text" class="input-text small a" name="addNbrQuestion" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Durée Max Question :</samp>
+                               <input type="text" class="input-text small a" name="addDureeMaxQuestion" /> 
+                               </div></br>
+                               
+                               <div class="form-row">
+                               <samp>Description :</samp>
+                               <textarea class="input-text large" name="addDescription" rows="4"></textarea>
+                               </div></br>
+                               <div class="form-row">
+                                  <input type="button" id="addTest" class="button green-button"   value="Valider" /> 
+                               </div></br>
+                               
+                               </div>
+                
+                </div>
+                
+                 <div id="modBox" class="wizard-box modal-box"> 
+                 
+                        
+                     <div id="opBox">			
+                     <h1>Modification Paramétrage du test :</h1>
+                               <div class="form-row">
+                               <samp>Nom Test :</samp>
+                               <input type="text" class="input-text medium a" name="modNom" disabled /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Durée :</samp>
+                               <input type="text" class="input-text small a" name="modDuree" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Nombre de question :</samp>
+                               <input type="text" class="input-text small a" name="modNbrQuestion" /> 
+                               </div></br>
+                               <div class="form-row">
+                               <samp>Durée Max Question :</samp>
+                               <input type="text" class="input-text small a" name="modDureeMaxQuestion" /> 
+                               </div></br>
+                               
+                               <div class="form-row">
+                               <samp>Description :</samp>
+                               <textarea class="input-text large" name="modDescription" rows="4"></textarea>
+                               </div></br>
+                               <div class="form-row">
+                                  <input type="button" id="modTest" class="button green-button"  value="Valider" /> 
+                               </div></br>
+                               
+                               </div>
+                
+                </div>
+                        
+                
+                
+                </div>
+		
+<script type="text/javascript">
+			$(document).ready(function(){
+				// "sDom": '<"H"Tfr>l<"clear">t<"F"ip>',
+				//"sDom": 'T<"clear">lfrtip',
+				
+			   var myTable = $('#DTtests').dataTable({
+			    	          
+			    	          "sDom": '<"TT" T><"clear"><"H"lfr>t<"F"ip>',
+			    	          "bProcessing": true,
+							  "sAjaxSource": "{{ path('_listing_tests') }}",
+							  "bJQueryUI": true,
+							  "sPaginationType": "full_numbers",
+							  "oTableTools": {
+        									    "sSwfPath": "{{ asset('bundles/racinegestionutilisateur/js/swf/copy_csv_xls_pdf.swf')}}",
+        									    "aButtons": [
+                                                                                                    "copy","print",
+                                                                                                    {
+                                                                                                            "sExtends":    "collection",
+                                                                                                            "sButtonText": "Enregistrer sous",
+                                                                                                            "aButtons":    [ "csv","xls", "pdf" ]
+                                                                                                    }
+												]
+       										 }		
+								         });
+                                                                
+                                                                
+				 
+				  $('#DTtests tr').live('click',function(){
+				  	if($(this).hasClass('row_selected'))
+				  	{
+				  		$(this).removeClass('row_selected');
+				  	}
+				  	else
+				  	{  
+				  		$('tr.row_selected').removeClass('row_selected');
+				  		$(this).addClass('row_selected');
+				  	}
+
+				  });
+                             
+        								 
+					
+				
+                    $('#ajouterTE').live('click',
+                            function(e){
+                               
+                              
+                              var testsModal = $("#addBox").modal();
+                              
+                                  
+                                                                      
+                                      $('#addTest').live('click',function(){ 
+                                            var nom = $('input[name="addNom"]').val();
+                                            var duree = $('input[name="addDuree"]').val();
+                                            var nbrQuestion = $('input[name="addNbrQuestion"]').val();
+                                            var dureeMaxQuestion = $('input[name="addDureeMaxQuestion"]').val();
+                                            var description = $('textarea[name="addDescription"]').val();
+                                          
+                                                 if(nom != "" && duree != "" && nbrQuestion != "" && dureeMaxQuestion != "" && description != "")
+                                                           {
+                                                            testsModal.close();
+                                                            $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "{{ path('Admin_Ajout_Test') }}",
+                                                                    data: {
+                                                                        nom: nom,
+                                                                        duree: duree,
+                                                                        nbrQuestion: nbrQuestion,
+                                                                        dureeMaxQuestion: dureeMaxQuestion,
+                                                                        description : description
+                                                                        
+                                                                        },
+                                                                        dataType : 'json',
+                                                                        success: function (data,status) {
+                                                                            if(data.status == "200")
+                                                                                {
+                                                                                     $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau test a été correctement ajouté à la base de donnée.</div></div>');
+
+
+                                                                            myTable.fnAddData([
+                                                                                data.info,
+                                                                                nom,
+                                                                                duree,
+                                                                                nbrQuestion,
+                                                                                dureeMaxQuestion,
+                                                                                description,
+                                                                                duree
+
+
+                                                                                ]);
+                                                                                }
+                                                                                else
+                                                                                {
+
+                                                                                        $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout de l\'utilisateur veuillez ressayer. </div></div>')
+
+                                                                                }
+                                                                         return false;
+                                                                                                      },
+                                                                       error: function (jqHx,status) {
+                                                                
+                                                                         return false;
+                                                                                                       }
+									   
+							    		
+							    
+                                                            });
+                                                            }
+                                                            else
+                                                                {
+                                                                    $.msgbox("Veuilez saisir toute les informations");
+                                                                }
+							    	
+							    	
+							    
+							  
+                               
+                                  
+                                                                    });
+				e.preventDefault();
+                                                    
+				
+			});
+                        
+                        // Fin ajout Test
+                        
+                        $('#modifierTE').live('click',
+                            function(e){
+                            
+                            selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{
+                                                            $('input[name="modNom"]').val($('#DTtests tr.row_selected td:eq(1)').text());
+                                                            $('input[name="modNbrQuestion"]').val($('#DTtests tr.row_selected td:eq(2)').text());
+                                                            $('input[name="modDuree"]').val($('#DTtests tr.row_selected td:eq(3)').text());
+                                                            $('input[name="modDureeMaxQuestion"]').val($('#DTtests tr.row_selected td:eq(4)').text());
+                                                            $('textarea[name="modDescription"]').val($('#DTtests tr.row_selected td:eq(5)').text());
+                                                            
+                               
+                              
+                              var testsModal = $("#modBox").modal();
+                              
+                                  
+                                                                      
+                                      $('#modTest').live('click',function(){ 
+                                           
+                                            var duree = $('input[name="modDuree"]').val();
+                                            var nbrQuestion = $('input[name="modNbrQuestion"]').val();
+                                            var dureeMaxQuestion = $('input[name="modDureeMaxQuestion"]').val();
+                                            var description = $('textarea[name="modDescription"]').val();
+                                            var id = $('#DTtests tr.row_selected td:first').text();
+                                            
+                                                 if(duree != "" && nbrQuestion != "" && dureeMaxQuestion != "" && description != "")
+                                                           {
+                                                            testsModal.close();
+                                                            $.ajax({
+                                                                    type: 'POST',
+                                                                    url: "{{ path('Admin_Modifier_Test') }}",
+                                                                    data: {
+                                                                        id:id,
+                                                                        duree:duree,
+                                                                        nbrQuestion:nbrQuestion,
+                                                                        dureeMaxQuestion:dureeMaxQuestion,
+                                                                        description:description
+                                                                        
+                                                                        },
+                                                                        dataType : 'json',
+                                                                        success: function (data,status) {
+                                                                            if(data.status == "200")
+                                                                                {
+                                                                                     $('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le nouveau test a été correctement modifié dans la base de donnée.</div></div>');
+                                                                                      
+                                                                                      
+                                                                                      
+                                                                                        $('#DTtests tr.row_selected td:eq(2)').text(duree);
+                                                                                        $('#DTtests tr.row_selected td:eq(3)').text(nbrQuestion);
+                                                                                        $('#DTtests tr.row_selected td:eq(4)').text(dureeMaxQuestion);
+                                                                                        $('#DTtests tr.row_selected td:eq(5)').text(description);
+                                                               
+
+                                                                           
+                                                                                }
+                                                                                else
+                                                                                {
+
+                                                                                        $('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong> : Une erreur est survenue lors de l\'ajout de l\'utilisateur veuillez ressayer. </div></div>')
+
+                                                                                }
+                                                                         return false;
+                                                                                                      },
+                                                                       error: function (jqHx,status) {
+                                                                
+                                                                         return false;
+                                                                                                       }
+									   
+							    		
+							    
+                                                            });
+                                                            }
+                                                            else
+                                                                {
+                                                                    $.msgbox("Veuilez saisir toute les informations");
+                                                                }
+							    	
+							    	
+							    
+							  
+                               
+                                  
+                                                                    }); }
+                                                                    else
+                                                                    {
+                                                                        $.msgbox("Veuilez sélectionnez un test");
+                                                                    }
+                                                                    
+				e.preventDefault();
+                                                    
+				
+			});
+			
+			
+			$('#supprimerTE').click(function(){
+							selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{		
+						            $.msgbox("êtes-vous sûr de vouloir supprimer ce test?", {
+														type: "confirm",
+													    
+														buttons : [
+													        {type: "submit", value: "Oui"},{type: "submit", value: "Non"}
+															]},
+													
+													function(result) {
+														if(result == "Oui")
+														{
+															id = $('#DTtests tr.row_selected td:first').text();
+															$.ajax({
+																url:"{{ path('Admin_delete_Test') }}",
+																dataType:'json',
+																type:'post',
+																data : {
+																	id:id
+																	
+																},
+																success:function(data){
+																	if(data.status == "200")
+																	{
+																		myTable.fnDeleteRow(selectedRow[0]);
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le test est définitivement supprimé de la base de donnée.</div></div>');
+																		
+																	}
+																	else if(data.status == "error")
+																	{
+																		
+										         					   	$('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong>'+ data.info +'</div></div>');
+																	
+																	}
+																	
+																},
+																error:function(){
+																	
+																}
+																
+																
+																
+															});
+															
+															
+															
+															
+														}
+														else if(result =="Non" )
+														{
+															
+															//$.msgbox("Votre demande de suppresion est annulée !",{type:info});
+														}
+														
+														
+														
+													});
+													
+										}
+										else
+										{
+											$.msgbox("Aucun test n'est sélectionné pour la suppresion !");
+										}
+										
+											
+											
+											
+											
+										});
+                                        //Fin Suppression Test
+                              
+                              $('#publierTE').click(function(){
+                                                                 
+                                                       selectedRow = myTable.$('tr.row_selected');
+							
+							
+							if(selectedRow.length !== 0)
+							{		
+						            $.msgbox("êtes-vous sûr de vouloir publier ce test?", {
+														type: "confirm",
+													    
+														buttons : [
+													        {type: "submit", value: "Oui"},{type: "submit", value: "Non"}
+															]},
+													
+													function(result) {
+														if(result == "Oui")
+														{
+															id = $('#DTtests tr.row_selected td:first').text();
+															$.ajax({
+																url:"{{ path('Admin_publish_Test') }}",
+																dataType:'json',
+																type:'post',
+																data : {
+																	id:id
+																	
+																},
+																success:function(data){
+																	if(data.status == "200")
+																	{
+																		myTable.fnDeleteRow(selectedRow[0]);
+																		$('#rqStatusFO').html(' <div class="notification success png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Success </strong> : Le test est définitivement supprimé de la base de donnée.</div></div>');
+																		
+																	}
+																	else if(data.status == "error")
+																	{
+																		
+										         					   	$('#rqStatusFO').html('<div class="notification error png_bg"><a href="#" class="close"><img src="images/icons/cross_grey_small.png" title="Close this notification" alt="close"></a><div><strong>Erreur </strong>'+ data.info +'</div></div>');
+																	
+																	}
+																	
+																},
+																error:function(){
+																	
+																}
+																
+																
+																
+															});
+															
+															
+															
+															
+														}
+														else if(result =="Non" )
+														{
+															
+															//$.msgbox("Votre demande de suppresion est annulée !",{type:info});
+														}
+														
+														
+														
+													});
+													
+										}
+										else
+										{
+											$.msgbox("Aucun test n'est sélectionné pour la suppresion !");
+										}
+										
+											
+                                                                                        
+                          
+                                                               });
+									
+                            });
+			
+	
+		</script>
+		
+	
+		<br/>
+		
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+	    <a id="ajouterTE" class="button" href="#"><i class="icon-plus"></i>Ajouter</a>
+            <a id="modifierTE" class="button" href="#"><i class="icon-edit"></i>Modifier</a>
+            <a id="supprimerTE" class="button" href="#"><i class="icon-remove-sign"></i>Supprimer</a>
+            <a id="publierTE" class="button" href="#"><i class="icon-share"></i>Publier</a>
+            
+            
+		{% endif %}
+	
+		
+	</div>
+   </div> 
+</div>
+
+
+
+
+{% endblock %}
+
+{% block footer %}
+ {{parent()}}
+{% endblock %}

@@ -16,10 +16,7 @@ class UtilisateurController extends Controller {
         if ($request->isXmlHttpRequest()) {
 
             $repository = $this->getDoctrine()->getRepository('racineGestionUtilisateurBundle:Utilisateur');
-
             $users = $repository->selectUsers();
-
-
 
             $secho = "1";
             $iTotalRecords = \count($users);
@@ -215,7 +212,7 @@ class UtilisateurController extends Controller {
                 $user = $em->getRepository('racineGestionUtilisateurBundle:Utilisateur')->find($id);
 
                 if (!$user) {
-                    throw $this->createNotFoundException('Unable to find Question entity.');
+                    throw $this->createNotFoundException('Utilisateur inexistant !');
                 }
                 
               $em->remove($user);

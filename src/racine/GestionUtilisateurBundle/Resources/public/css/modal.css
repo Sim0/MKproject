@@ -20,8 +20,17 @@ border-radius: 5px;
 -moz-border-radius: 5px;
 -webkit-border-radius: 5px;
 padding:20px 20px 20px 100px;
+marging:20px 20px 20px 20px;
 
 }
+#opBox h1{
+	color:#5c5c5c;
+	font: 32px 'TallFilmsExpandedRegular';
+	overflow:hidden;
+	/*font-weight:bolder;*/
+	letter-spacing:1px;
+}
+
 
 #modBox2,#modBox3{
 width:600px;
@@ -34,9 +43,12 @@ padding:20px 20px 20px 100px;
 	padding:20px 20px 20px 100px;
 }
 #addBox,#modBox,#modBox5{
-height:480px;
+
 width:1000px;
 
+}
+#displayRep{
+width:800px;
 }
 #opBox{
   position: relative;
